@@ -1,0 +1,22 @@
+{
+  "name": "Vidhun Krishna | Frontend Developer",
+  "short_name": "VK",
+  "description": "Frontend Developer portfolio — Angular, TypeScript & modern UI. Based in Kerala, India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0f14",
+  "theme_color": "#0e0f14",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

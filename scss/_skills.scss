@@ -1,0 +1,739 @@
+@use "variables" as *;
+
+.skills {
+  --skill-accent: #{$accent};
+  position: relative;
+  // Glow starts mid-section so the About join stays seamless
+  background:
+    linear-gradient(180deg, transparent 0%, transparent 12%, rgba(14, 15, 20, 0.2) 35%, transparent 70%),
+    radial-gradient(ellipse 70% 55% at 14% 42%, rgba(91, 140, 255, 0.1), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 92% 78%, rgba(196, 165, 116, 0.045), transparent 55%);
+  padding-top: clamp(0.75rem, 1.8vw, 1.35rem);
+  padding-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  min-height: 0;
+  overflow: visible;
+  margin-top: 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -3.5rem;
+    height: 3.5rem;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(11, 12, 16, 0.15) 55%,
+      transparent 100%
+    );
+  }
+
+  &__header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.9rem;
+    max-width: 38rem;
+
+    .section-title {
+      margin-bottom: 0.3rem;
+    }
+
+    .section-lead {
+      margin-bottom: 0;
+      max-width: 36rem;
+    }
+  }
+
+  &__showcase {
+    position: relative;
+    z-index: 1;
+    outline: none;
+  }
+
+  &__orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(2px);
+    z-index: 0;
+
+    &--a {
+      width: min(42vw, 280px);
+      height: min(42vw, 280px);
+      top: -18%;
+      right: -4%;
+      background: radial-gradient(circle, rgba(91, 140, 255, 0.16), transparent 68%);
+    }
+
+    &--b {
+      width: min(36vw, 220px);
+      height: min(36vw, 220px);
+      bottom: -12%;
+      left: -6%;
+      background: radial-gradient(circle, rgba(196, 165, 116, 0.1), transparent 70%);
+    }
+  }
+
+  &__shell {
+    position: relative;
+    z-index: 1;
+    border-radius: $radius-xl;
+    border: 1px solid rgba(150, 175, 255, 0.14);
+    padding: clamp(0.85rem, 1.8vw, 1.15rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    background:
+      radial-gradient(ellipse 70% 55% at 88% 8%, rgba(91, 140, 255, 0.18), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 10% 95%, rgba(196, 165, 116, 0.07), transparent 50%),
+      linear-gradient(145deg, rgba(28, 32, 48, 0.78), rgba(12, 14, 22, 0.88));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 24px 50px rgba(0, 0, 0, 0.32),
+      0 0 36px rgba(91, 140, 255, 0.07);
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image:
+        linear-gradient(rgba(160, 185, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(160, 185, 255, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+    }
+  }
+
+  &__tabs {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    overflow-x: auto;
+    padding-bottom: 0.1rem;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__tab {
+    flex: 0 0 auto;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid rgba(150, 175, 255, 0.12);
+    border-radius: 999px;
+    padding: 0.42rem 0.8rem;
+    background: rgba(12, 14, 22, 0.4);
+    color: rgba(180, 195, 220, 0.7);
+    font-family: $font-body;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      color 0.35s $ease,
+      border-color 0.35s $ease,
+      background 0.35s $ease,
+      box-shadow 0.35s $ease;
+
+    &:hover {
+      color: #f0f4ff;
+      border-color: rgba(170, 190, 255, 0.28);
+    }
+
+    &.is-active {
+      color: #f7f9ff;
+      border-color: color-mix(in srgb, var(--skill-accent, #{$accent}) 50%, rgba(255, 255, 255, 0.15));
+      background:
+        linear-gradient(
+          145deg,
+          color-mix(in srgb, var(--skill-accent, #{$accent}) 24%, transparent),
+          rgba(255, 255, 255, 0.04)
+        );
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 0 18px color-mix(in srgb, var(--skill-accent, #{$accent}) 22%, transparent);
+    }
+  }
+
+  &__tab-index {
+    opacity: 0.55;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__stage {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  &__nav {
+    position: relative;
+    isolation: isolate;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 12px;
+    border: 1px solid rgba(170, 190, 255, 0.2);
+    background:
+      radial-gradient(120% 90% at 30% 0%, rgba(255, 255, 255, 0.14), transparent 45%),
+      linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 50%, rgba(10, 12, 20, 0.35)),
+      rgba(14, 18, 30, 0.7);
+    color: rgba(220, 230, 255, 0.9);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 8px 18px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    transition:
+      transform 0.35s $ease,
+      border-color 0.35s $ease,
+      box-shadow 0.35s $ease,
+      color 0.35s $ease,
+      background 0.35s $ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      pointer-events: none;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.45),
+        rgba(91, 140, 255, 0.4) 40%,
+        rgba(196, 165, 116, 0.2) 70%,
+        rgba(255, 255, 255, 0.28)
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.7;
+      transition: opacity 0.35s $ease;
+    }
+
+    svg {
+      position: relative;
+      z-index: 1;
+      transition: transform 0.35s $ease;
+    }
+
+    &:hover {
+      color: #fff;
+      border-color: rgba(170, 200, 255, 0.4);
+      background:
+        radial-gradient(120% 90% at 30% 0%, rgba(255, 255, 255, 0.18), transparent 45%),
+        linear-gradient(165deg, rgba(91, 140, 255, 0.22), rgba(255, 255, 255, 0.04)),
+        rgba(14, 18, 30, 0.8);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(91, 140, 255, 0.22),
+        0 10px 22px rgba(0, 0, 0, 0.28);
+      transform: translateY(-1px);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &--prev:hover svg {
+      transform: translateX(-2px);
+    }
+
+    &--next:hover svg {
+      transform: translateX(2px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.97);
+    }
+  }
+
+  &__viewport {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 11.5rem;
+    background:
+      radial-gradient(120% 80% at 8% 0%, rgba(255, 255, 255, 0.08), transparent 40%),
+      radial-gradient(
+        90% 70% at 100% 100%,
+        color-mix(in srgb, var(--skill-accent, #{$accent}) 14%, transparent),
+        transparent 50%
+      ),
+      rgba(10, 12, 18, 0.45);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -10px 24px rgba(0, 0, 0, 0.18);
+    transition:
+      background 0.7s $ease,
+      opacity 0.35s $ease,
+      filter 0.35s $ease;
+
+    &.is-crossfading {
+      opacity: 0;
+      filter: blur(2px);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      pointer-events: none;
+      z-index: 2;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4),
+        rgba(91, 140, 255, 0.4) 35%,
+        rgba(196, 165, 116, 0.2) 60%,
+        rgba(255, 255, 255, 0.28)
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.75;
+    }
+  }
+
+  &__track {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    transition: transform 0.85s cubic-bezier(0.33, 1, 0.32, 1);
+
+    &.is-instant {
+      transition: none;
+    }
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0.85rem 0.95rem 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    opacity: 0.28;
+    transform: scale(0.97) translateY(6px);
+    transition:
+      opacity 0.75s cubic-bezier(0.33, 1, 0.32, 1),
+      transform 0.75s cubic-bezier(0.33, 1, 0.32, 1);
+    pointer-events: none;
+
+    &.is-active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    &.is-measuring {
+      opacity: 1 !important;
+      transform: none !important;
+      height: auto !important;
+      min-height: 0 !important;
+    }
+  }
+
+  &__slide-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  &__slide-label {
+    margin: 0;
+    font-family: $font-display;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--skill-accent, #{$accent}) 40%, #eef3ff);
+
+    span {
+      opacity: 0.55;
+      margin-right: 0.2rem;
+    }
+  }
+
+  &__slide-count {
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(160, 175, 205, 0.5);
+  }
+
+  &__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    align-content: center;
+  }
+
+  &__tile {
+    --gx: 50%;
+    --gy: 32%;
+    list-style: none;
+  }
+
+  &__card {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 3.85rem;
+    height: 100%;
+    padding: 0.7rem 0.8rem;
+    border-radius: 14px;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.12), transparent 42%),
+      radial-gradient(
+        90% 70% at 100% 100%,
+        color-mix(in srgb, var(--skill-accent, #{$accent}) 12%, transparent),
+        transparent 48%
+      ),
+      linear-gradient(165deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015) 50%, rgba(10, 12, 20, 0.3)),
+      rgba(14, 18, 30, 0.65);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 8px 18px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px) saturate(145%);
+    -webkit-backdrop-filter: blur(12px) saturate(145%);
+    transform-style: preserve-3d;
+    transition:
+      transform 0.4s $ease,
+      box-shadow 0.4s $ease,
+      filter 0.4s $ease;
+
+    &:hover,
+    &:focus-within {
+      transform: translateY(-3px);
+      filter: saturate(1.05);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 14px 28px rgba(0, 0, 0, 0.28),
+        0 0 22px color-mix(in srgb, var(--skill-accent, #{$accent}) 18%, transparent);
+
+      .skills__card-border {
+        opacity: 1;
+        animation: skills-border-flow 2.6s linear infinite;
+      }
+
+      .skills__card-glow {
+        opacity: 1;
+      }
+
+      .skills__logo {
+        transform: translateY(-2px) scale(1.08) rotate(-4deg);
+        border-color: color-mix(in srgb, var(--skill-accent, #{$accent}) 45%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.25),
+          0 0 16px color-mix(in srgb, var(--skill-accent, #{$accent}) 30%, transparent);
+      }
+
+      .skills__logo img,
+      .skills__logo-mark {
+        transform: scale(1.08);
+        filter: brightness(1.12) drop-shadow(0 0 7px color-mix(in srgb, var(--skill-accent, #{$accent}) 45%, transparent));
+      }
+
+      .skills__name {
+        color: #fff;
+      }
+    }
+  }
+
+  &__tile--featured .skills__card {
+    background:
+      radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.16), transparent 42%),
+      radial-gradient(
+        90% 70% at 100% 100%,
+        color-mix(in srgb, var(--skill-accent, #{$accent}) 20%, transparent),
+        transparent 48%
+      ),
+      linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(91, 140, 255, 0.06) 55%, rgba(10, 12, 20, 0.28)),
+      rgba(16, 20, 34, 0.72);
+  }
+
+  &__card-border {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.55;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(91, 140, 255, 0.48) 30%,
+      rgba(196, 165, 116, 0.24) 55%,
+      rgba(140, 170, 255, 0.38) 78%,
+      rgba(255, 255, 255, 0.3) 100%
+    );
+    background-size: 220% 220%;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    transition: opacity 0.35s $ease;
+  }
+
+  &__card-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s $ease;
+    background: radial-gradient(
+      120px circle at var(--gx) var(--gy),
+      color-mix(in srgb, var(--skill-accent, #{$accent}) 26%, transparent),
+      transparent 55%
+    );
+  }
+
+  &__logo {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(170, 190, 255, 0.2);
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.16), transparent 48%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.07), color-mix(in srgb, var(--skill-accent, #{$accent}) 12%, transparent)),
+      rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    transition: transform 0.4s $ease, border-color 0.35s $ease, box-shadow 0.35s $ease;
+
+    img,
+    .skills__logo-mark {
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+      transition: transform 0.35s $ease, filter 0.35s $ease;
+    }
+  }
+
+  &__logo-mark {
+    display: grid;
+    place-items: center;
+    font-family: $font-display;
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: #d7e3ff;
+  }
+
+  &__name {
+    position: relative;
+    z-index: 1;
+    font-family: $font-body;
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: rgba(236, 240, 250, 0.94);
+    line-height: 1.25;
+    transition: color 0.3s $ease;
+  }
+
+  &__chrome {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.15rem 0.1rem 0;
+  }
+
+  &__counter {
+    flex-shrink: 0;
+    font-family: $font-display;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: rgba(190, 205, 230, 0.72);
+    min-width: 4.4rem;
+  }
+
+  &__progress {
+    flex: 1;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #8eb4ff, #5b8cff 55%, #7aa8ff);
+    box-shadow: 0 0 10px rgba(91, 140, 255, 0.5);
+    transition: width 0.85s cubic-bezier(0.33, 1, 0.32, 1);
+  }
+}
+
+@keyframes skills-border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .skills__shell {
+    background: linear-gradient(145deg, #1c2030, #0c0e14);
+  }
+
+  .skills__tab.is-active {
+    background: rgba(91, 140, 255, 0.2);
+    border-color: rgba(91, 140, 255, 0.45);
+  }
+}
+
+@media (min-width: $bp-sm) {
+  .skills__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $bp-md) {
+  .skills__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .skills__viewport {
+    min-height: 10.75rem;
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .skills__shell {
+    padding: 1rem 1.15rem 1.05rem;
+  }
+
+  .skills__slide {
+    padding: 0.95rem 1.05rem 1rem;
+  }
+}
+
+@media (max-width: ($bp-sm - 1)) {
+  .skills__chrome {
+    flex-wrap: wrap;
+  }
+
+  .skills__controls {
+    margin-left: auto;
+  }
+
+  .skills__progress {
+    order: 3;
+    flex: 1 1 100%;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .skills__card:hover {
+    transform: none;
+  }
+
+  .skills__card-glow {
+    display: none;
+  }
+
+  .skills__card:hover .skills__logo {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills__tab,
+  .skills__nav,
+  .skills__track,
+  .skills__slide,
+  .skills__card,
+  .skills__logo,
+  .skills__logo img,
+  .skills__logo-mark,
+  .skills__card-border,
+  .skills__card-glow,
+  .skills__progress-fill,
+  .skills__viewport {
+    transition: none !important;
+  }
+
+  .skills__card:hover .skills__card-border {
+    animation: none;
+  }
+
+  .skills__slide {
+    opacity: 1;
+    transform: none;
+  }
+
+  .skills__card:hover,
+  .skills__nav:hover,
+  .skills__card:hover .skills__logo {
+    transform: none;
+  }
+}

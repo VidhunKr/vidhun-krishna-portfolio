@@ -1,0 +1,81 @@
+@use "variables" as *;
+
+.font-display {
+  font-family: $font-display;
+}
+
+.section-label {
+  display: inline-block;
+  font-family: $font-body;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $accent;
+  margin-bottom: $space-2;
+}
+
+.section-title {
+  font-family: $font-display;
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: $text-primary;
+  max-width: 18ch;
+
+  &--wide {
+    max-width: 22ch;
+  }
+}
+
+.section-lead {
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.7;
+  color: $text-secondary;
+  max-width: 42ch;
+  margin-top: 1rem;
+}
+
+.accent-text {
+  color: $accent;
+}
+
+// Shared shimmer — used by footer CTA + hero title
+.text-metallic {
+  background: linear-gradient(
+    115deg,
+    #f5f7fb 0%,
+    #c8d4ef 22%,
+    #8eb4ff 45%,
+    #e8eef8 62%,
+    #c4a574 82%,
+    #f5f7fb 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-metallic-shift 7s ease-in-out infinite;
+}
+
+@keyframes text-metallic-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-metallic {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}

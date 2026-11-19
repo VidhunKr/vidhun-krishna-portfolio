@@ -1,0 +1,349 @@
+@use "variables" as *;
+
+// Shared container breathing room — padding keeps equal left/right space
+@media (max-width: ($bp-lg - 1)) {
+  .container,
+  .container--wide {
+    width: 100%;
+    max-width: $container-wide;
+    padding-inline: 1.25rem;
+    box-sizing: border-box;
+  }
+
+  .hero__chip {
+    display: none;
+  }
+
+  .hero__visual {
+    max-width: 400px;
+  }
+
+  .projects__item {
+    gap: 1.5rem;
+  }
+
+}
+
+@media (max-width: ($bp-md - 1)) {
+  .container,
+  .container--wide {
+    padding-inline: 1.35rem;
+  }
+
+  .site-header {
+    --nav-pad-y: 0.5rem;
+    --nav-pad-x: 0.55rem;
+    top: 12px;
+    padding-inline: 0.75rem;
+  }
+
+  .site-header.is-scrolled {
+    top: 10px;
+  }
+
+  .nav {
+    min-height: 52px;
+    gap: 0.65rem;
+  }
+
+  section {
+    padding: clamp(1.65rem, 5vw, 2.35rem) 0;
+  }
+
+  .hero {
+    padding-top: calc(#{$header-h} + 0.5rem);
+    padding-bottom: 1.75rem;
+    min-height: auto;
+  }
+
+  .hero__inner {
+    gap: 1.5rem;
+  }
+
+  .section-label {
+    margin-bottom: 0.55rem;
+  }
+
+  .section-lead {
+    margin-top: 0.55rem;
+    line-height: 1.55;
+  }
+
+  .about {
+    padding-bottom: 1rem;
+  }
+
+  .skills {
+    padding-top: 0.65rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .projects {
+    padding-top: 1.65rem;
+    padding-bottom: 1.65rem;
+  }
+
+  .experience {
+    padding-top: 1.65rem;
+    padding-bottom: 1rem;
+  }
+
+  .contact {
+    padding-top: 1.65rem;
+  }
+
+  .hero__title {
+    font-size: clamp(2.1rem, 9vw, 3.2rem);
+  }
+
+  .hero__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    width: 100%;
+  }
+
+  .hero__socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+    width: 100%;
+    margin-top: 0.2rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(150, 175, 255, 0.12);
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.6rem;
+      font-size: 0.8125rem;
+      letter-spacing: -0.01em;
+    }
+
+    a:not(:last-child)::after {
+      content: "·";
+      margin-left: 0.75rem;
+      color: rgba(150, 175, 255, 0.35);
+      pointer-events: none;
+    }
+  }
+
+  .hero__actions {
+    width: 100%;
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .hero__visual {
+    width: min(100%, 340px);
+    margin-inline: auto;
+  }
+
+  .hero__frame {
+    border-radius: 22px;
+  }
+
+  .hero__scroll {
+    display: none;
+  }
+
+  .about__grid {
+    gap: 1.5rem;
+  }
+
+  .about__workspace--featured {
+    max-width: 100%;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .about__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem 0.4rem;
+    margin-top: 1.15rem;
+    padding-top: 0.9rem;
+  }
+
+  .about__stat-label {
+    max-width: none;
+  }
+
+  .skills__header {
+    margin-bottom: 0.7rem;
+  }
+
+  .projects__header,
+  .services__header,
+  .experience__header {
+    margin-bottom: 0.9rem;
+  }
+
+  .projects__list {
+    gap: 1.75rem;
+  }
+
+  .projects__item {
+    gap: 1rem;
+  }
+
+  .projects__item:nth-child(even) .projects__content {
+    text-align: left;
+
+    .projects__tech,
+    .projects__links {
+      justify-content: flex-start;
+    }
+  }
+
+  .projects__name {
+    font-size: clamp(1.5rem, 6vw, 2.1rem);
+  }
+
+  .services {
+    padding-top: 1.65rem;
+    padding-bottom: 1.65rem;
+  }
+
+  .services__header {
+    margin-bottom: 0.85rem;
+  }
+
+  .services__grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .contact__panel {
+    border-radius: $radius-lg;
+  }
+
+  .experience__header {
+    margin-bottom: 0.85rem;
+  }
+
+  .experience__timeline::before {
+    left: 0.55rem;
+    transform: none;
+  }
+
+  .experience__item {
+    width: 100% !important;
+    align-self: stretch !important;
+    text-align: left !important;
+    padding: 0 0 1.25rem 2.1rem !important;
+
+    &:last-child {
+      padding-bottom: 0.35rem !important;
+    }
+
+    .experience__dot {
+      left: 0 !important;
+      right: auto !important;
+    }
+
+    .experience__duration {
+      margin-bottom: 0.55rem;
+    }
+
+    .experience__duties {
+      gap: 0.3rem;
+      margin-bottom: 0.7rem;
+
+      li {
+        padding-left: 1rem !important;
+        padding-right: 0 !important;
+        line-height: 1.45;
+
+        &::before {
+          left: 0 !important;
+          right: auto !important;
+        }
+      }
+    }
+
+    .experience__tech {
+      justify-content: flex-start !important;
+      gap: 0.35rem;
+    }
+  }
+}
+
+@media (max-width: ($bp-sm - 1)) {
+  .container,
+  .container--wide {
+    width: 100%;
+    padding-inline: 1.25rem;
+    box-sizing: border-box;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero__actions .btn,
+  .contact__form .btn {
+    width: 100%;
+  }
+
+  .nav__availability:not(.nav__availability--mobile) {
+    display: none !important;
+  }
+
+  .section-title {
+    max-width: 100%;
+  }
+
+  .section-lead {
+    max-width: 100%;
+  }
+
+  .tech-chip {
+    font-size: 0.7rem;
+  }
+
+  .about__stats {
+    gap: 0.5rem 0.35rem;
+  }
+
+  .about__stat-value {
+    font-size: clamp(1.35rem, 7vw, 1.75rem);
+  }
+
+  .about__stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.01em;
+  }
+
+  .preloader__mark-logo {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+// Prevent horizontal overflow without clipping position:fixed navbar
+html {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  max-width: 100%;
+}
+
+main {
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+

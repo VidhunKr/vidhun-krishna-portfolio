@@ -1,0 +1,148 @@
+@use "variables" as *;
+
+.logo {
+  font-family: $font-display;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  z-index: 110;
+  min-width: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s $ease, transform 0.6s $ease;
+
+  &:hover .logo__crystal {
+    transform: scale(1.03);
+  }
+
+  &:hover .logo__shine {
+    transform: translateX(140%) skewX(-18deg);
+    opacity: 0.7;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(200, 200, 200, 0.55);
+    outline-offset: 4px;
+    border-radius: 10px;
+  }
+
+  &__mark {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  &__crystal {
+    width: 40px;
+    height: 40px;
+    display: block;
+    transition: transform 0.45s $ease;
+  }
+
+  &__shine {
+    position: absolute;
+    inset: -20% auto -20% -40%;
+    width: 42%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.28),
+      transparent
+    );
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.7s $ease, opacity 0.35s $ease;
+  }
+
+  &__wordmark {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  &__text {
+    color: $text-primary;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: min(42vw, 11.5rem);
+  }
+
+  &__tag {
+    font-family: $font-body;
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $text-muted;
+    white-space: nowrap;
+  }
+
+  // Hidden mark while the preloader crystal flies into place
+  &--awaiting &__mark {
+    opacity: 0;
+  }
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .logo__text {
+    max-width: none;
+  }
+}
+
+@media (max-width: ($bp-sm - 1)) {
+  .logo__tag {
+    display: none;
+  }
+
+  .logo__mark,
+  .logo__crystal {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo {
+    gap: 0.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .logo__crystal,
+  .logo__shine {
+    transition: none !important;
+  }
+
+  .logo {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,59 @@
+// Color system — deep midnight navy (footer-driven)
+// Footer reference: #0e0f14, #0b0c10, #080809 + blue/champagne glows
+$bg-primary: #0b0c10;
+$bg-secondary: #0e0f14;
+$bg-elevated: #14161e;
+$bg-hover: #1a1d28;
+$bg-deep: #08090c;
+
+$text-primary: #f5f3ef;
+$text-secondary: #a5a5a5;
+$text-muted: #6e6e6e;
+
+$border: rgba(150, 175, 255, 0.1);
+$border-strong: rgba(170, 190, 255, 0.16);
+
+$accent: #5b8cff;
+$accent-soft: rgba(91, 140, 255, 0.16);
+$accent-glow: rgba(91, 140, 255, 0.35);
+$champagne: #c4a574;
+
+$silver: #c8c8c8;
+$success: #6fbf73;
+
+// Typography
+$font-display: "Syne", sans-serif;
+$font-body: "Manrope", sans-serif;
+$font-form: "IBM Plex Sans", "Manrope", sans-serif;
+
+// Spacing scale (8px base) — generous editorial rhythm
+$space-1: 0.5rem;
+$space-2: 1rem;
+$space-3: 1.5rem;
+$space-4: 2.25rem;
+$space-5: 3.5rem;
+$space-6: 5rem;
+$space-7: 7rem;
+$space-8: 9rem;
+
+// Radius
+$radius-sm: 4px;
+$radius-md: 12px;
+$radius-lg: 20px;
+$radius-xl: 28px;
+
+// Layout
+$container: 1200px;
+$container-wide: 1400px;
+$header-h: 92px;
+$header-h-scrolled: 78px;
+
+// Transitions
+$ease: cubic-bezier(0.22, 1, 0.36, 1);
+$duration: 0.45s;
+
+// Breakpoints
+$bp-sm: 576px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;

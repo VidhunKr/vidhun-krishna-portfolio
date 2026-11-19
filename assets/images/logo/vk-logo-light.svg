@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="VK light logo">
+  <defs>
+    <linearGradient id="lFace" x1="20" y1="18" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2A3344"/>
+      <stop offset="55%" stop-color="#4E6284"/>
+      <stop offset="100%" stop-color="#5B8CFF"/>
+    </linearGradient>
+    <linearGradient id="lEdge" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A9BAD6"/>
+      <stop offset="100%" stop-color="#5B8CFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="104" height="104" rx="30" fill="#F5F7FA"/>
+  <rect x="8.75" y="8.75" width="102.5" height="102.5" rx="29" fill="none" stroke="url(#lEdge)" stroke-width="1.6"/>
+  <rect x="15" y="15" width="90" height="90" rx="24" fill="#FFFFFF" fill-opacity="0.7" stroke="rgba(91,140,255,0.16)" stroke-width="1"/>
+  <path d="M24 32 H36 L46 68 L52 50 H62 L48 88 H38 Z" fill="url(#lFace)"/>
+  <path d="M58 32 H68 V88 H58 Z" fill="url(#lFace)"/>
+  <path d="M68 32 H92 L78 54 L68 48 Z" fill="#5A6F90" fill-opacity="0.92"/>
+  <path d="M68 56 L80 56 L96 88 H80 L68 68 Z" fill="#5B8CFF" fill-opacity="0.88"/>
+  <path d="M40 38 L48 72" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.3" stroke-linecap="round"/>
+  <circle cx="96" cy="26" r="3.2" fill="#5B8CFF"/>
+</svg>

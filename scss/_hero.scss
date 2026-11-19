@@ -1,0 +1,410 @@
+@use "variables" as *;
+
+.hero {
+  min-height: auto;
+  display: flex;
+  align-items: flex-start;
+  padding-top: calc(#{$header-h} + 2rem);
+  padding-bottom: 3.5rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 55% at 85% 20%, rgba(91, 140, 255, 0.1), transparent 55%),
+    radial-gradient(ellipse 45% 40% at 10% 80%, rgba(196, 165, 116, 0.05), transparent 50%);
+
+  &__inner {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    gap: 2.75rem;
+    align-items: center;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 3;
+    max-width: 38rem;
+  }
+
+  &__label {
+    margin-bottom: $space-3;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2.5rem, 6.4vw, 4.85rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    margin-bottom: $space-4;
+
+    .hero__title-text {
+      // Keep gradient clip stable during entrance animation
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+    }
+
+    .accent-text {
+      // Inherit parent shimmer — no nested clip (avoids broken letters)
+      color: inherit;
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      animation: none;
+    }
+  }
+
+  &__intro {
+    color: $text-secondary;
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.8;
+    margin-bottom: $space-4;
+    max-width: 40ch;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: $space-4;
+  }
+
+  &__meta {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.35rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
+  }
+
+  &__location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    svg {
+      opacity: 0.7;
+    }
+  }
+
+  &__socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  &__contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: $text-secondary;
+    transition: color 0.3s $ease;
+
+    svg {
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: opacity 0.3s $ease;
+    }
+
+    &:hover {
+      color: $accent;
+
+      svg {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__visual {
+    position: relative;
+    width: min(100%, 480px);
+    margin-inline: auto;
+    isolation: isolate;
+    perspective: 1200px;
+  }
+
+  &__frame {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid $border-strong;
+    aspect-ratio: 3 / 4;
+    background: $bg-deep;
+    transform-style: preserve-3d;
+    transition:
+      transform 0.45s $ease,
+      border-color 0.45s $ease,
+      box-shadow 0.45s $ease;
+    box-shadow:
+      0 40px 80px rgba(0, 0, 0, 0.55),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+    // Deep black / midnight shade — slightly lifted for face clarity
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(8, 9, 14, 0.2) 0%,
+          rgba(11, 12, 16, 0.08) 35%,
+          rgba(8, 9, 14, 0.38) 72%,
+          rgba(5, 6, 10, 0.62) 100%
+        ),
+        radial-gradient(ellipse 80% 60% at 50% 20%, rgba(91, 140, 255, 0.06), transparent 65%),
+        rgba(8, 10, 18, 0.14);
+      mix-blend-mode: multiply;
+    }
+  }
+
+  // Rope / ring border (same language as skills cards)
+  &__rope {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.45;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(91, 140, 255, 0.55) 28%,
+      rgba(196, 165, 116, 0.32) 52%,
+      rgba(140, 170, 255, 0.45) 76%,
+      rgba(255, 255, 255, 0.35) 100%
+    );
+    background-size: 220% 220%;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    transition: opacity 0.4s $ease;
+
+    &--frame {
+      padding: 1.5px;
+      opacity: 0.5;
+    }
+  }
+
+  &__frame picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transform: none;
+    transition: transform 1.1s $ease;
+    filter: brightness(0.74) contrast(1.1) saturate(0.78);
+  }
+
+  &__visual:hover .hero__portrait {
+    transform: scale(1.03);
+  }
+
+  &__visual:hover .hero__frame {
+    border-color: rgba(150, 185, 255, 0.28);
+    box-shadow:
+      0 44px 90px rgba(0, 0, 0, 0.58),
+      0 0 36px rgba(91, 140, 255, 0.14),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  &__visual:hover .hero__rope--frame {
+    opacity: 1;
+    animation: hero-rope-flow 2.4s linear infinite;
+  }
+
+  &__visual:hover .hero__chip .hero__rope {
+    opacity: 1;
+    animation: hero-rope-flow 2.6s linear infinite;
+  }
+
+  &__visual:hover .hero__chip {
+    border-color: rgba(170, 195, 255, 0.32);
+    box-shadow:
+      0 14px 34px rgba(0, 0, 0, 0.4),
+      0 0 18px rgba(91, 140, 255, 0.12);
+  }
+
+  &__glow {
+    position: absolute;
+    inset: 8% -6% -4%;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(91, 140, 255, 0.22), transparent 55%),
+      radial-gradient(circle at 70% 80%, rgba(196, 165, 116, 0.1), transparent 45%);
+    filter: blur(36px);
+    z-index: -1;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &__chip {
+    position: absolute;
+    z-index: 4;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 0.7rem 0.95rem;
+    border-radius: $radius-md;
+    border: 1px solid $border-strong;
+    background: rgba(12, 14, 22, 0.78);
+    backdrop-filter: blur(14px);
+    font-size: 0.75rem;
+    color: $text-secondary;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    animation: float-orb 7s ease-in-out infinite;
+    transition: border-color 0.4s $ease, box-shadow 0.4s $ease;
+
+    strong {
+      position: relative;
+      z-index: 1;
+      display: block;
+      color: $text-primary;
+      font-size: 0.85rem;
+      margin-bottom: 0.15rem;
+    }
+  }
+
+  &__chip--a {
+    top: 14%;
+    left: -10%;
+    animation-delay: 0.4s;
+  }
+
+  &__chip--b {
+    bottom: 12%;
+    right: -8%;
+    animation-delay: 1.6s;
+  }
+
+  &__scroll {
+    position: absolute;
+    bottom: 1.15rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $text-muted;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.55;
+
+    &-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, $accent, transparent);
+      animation: scroll-line 2s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes scroll-line {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+  }
+  40% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+  60% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+    opacity: 0;
+  }
+}
+
+@keyframes float-orb {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes hero-rope-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@media (min-width: $bp-md) and (max-width: ($bp-lg - 1)) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 4rem;
+  }
+
+  .hero__inner {
+    gap: 3rem;
+  }
+
+  .hero__visual {
+    width: min(100%, 380px);
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .hero__inner {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2.75rem;
+  }
+
+  // Keep scroll centered under the hero — never under the meta row
+  .hero__scroll {
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero__visual:hover .hero__rope--frame,
+  .hero__visual:hover .hero__chip .hero__rope {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__chip {
+    animation: none;
+  }
+
+  .hero__rope,
+  .hero__visual:hover .hero__rope--frame,
+  .hero__visual:hover .hero__chip .hero__rope {
+    animation: none !important;
+  }
+}

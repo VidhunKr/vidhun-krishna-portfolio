@@ -1,0 +1,827 @@
+@use "variables" as *;
+
+.crystal-field {
+  --crystal-border: rgba(170, 190, 255, 0.28);
+  --crystal-glow: rgba(91, 140, 255, 0);
+  --crystal-lift: 0px;
+
+  position: relative;
+  isolation: isolate;
+  border-radius: 18px;
+  transform: translateY(var(--crystal-lift));
+  transition:
+    transform 0.45s $ease,
+    filter 0.45s $ease;
+
+  // Animated gradient rim
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(91, 140, 255, 0.55) 28%,
+      rgba(196, 165, 116, 0.28) 52%,
+      rgba(120, 150, 255, 0.35) 78%,
+      rgba(255, 255, 255, 0.4) 100%
+    );
+    background-size: 220% 220%;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.72;
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity 0.45s $ease, filter 0.45s $ease;
+  }
+
+  // Inner glass body
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(18px - 1px);
+    background:
+      radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.22), transparent 40%),
+      radial-gradient(90% 70% at 100% 100%, rgba(91, 140, 255, 0.14), transparent 45%),
+      linear-gradient(165deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02) 45%, rgba(91, 140, 255, 0.05)),
+      rgba(14, 18, 28, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.34),
+      inset 0 -12px 28px rgba(0, 0, 0, 0.22),
+      0 12px 32px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(91, 140, 255, 0.04),
+      0 0 36px var(--crystal-glow);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    pointer-events: none;
+    z-index: 0;
+    transition: box-shadow 0.45s $ease, background 0.45s $ease;
+  }
+
+  &__sheen {
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: -40%;
+      width: 42%;
+      height: 140%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.18),
+        rgba(180, 205, 255, 0.22),
+        transparent
+      );
+      transform: translateX(-120%) skewX(-18deg);
+      opacity: 0;
+    }
+  }
+
+  &:hover {
+    --crystal-lift: -1px;
+
+    &::before {
+      opacity: 0.95;
+      filter: brightness(1.08);
+    }
+  }
+
+  &:focus-within {
+    --crystal-lift: -2px;
+    --crystal-glow: rgba(91, 140, 255, 0.28);
+
+    &::before {
+      opacity: 1;
+      animation: crystal-border-flow 2.4s linear infinite;
+      filter: brightness(1.15) saturate(1.15);
+    }
+
+    &::after {
+      background:
+        radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.3), transparent 42%),
+        radial-gradient(90% 70% at 100% 100%, rgba(91, 140, 255, 0.22), transparent 48%),
+        linear-gradient(165deg, rgba(255, 255, 255, 0.14), rgba(91, 140, 255, 0.08) 55%, rgba(14, 18, 28, 0.2)),
+        rgba(16, 22, 36, 0.36);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -12px 28px rgba(0, 0, 0, 0.18),
+        0 16px 40px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(91, 140, 255, 0.18),
+        0 0 42px var(--crystal-glow);
+    }
+
+    .crystal-field__sheen::before {
+      opacity: 1;
+      animation: crystal-shine-pass 1.15s $ease;
+    }
+  }
+
+  input,
+  textarea {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: #f4f6fb;
+    font-family: $font-form;
+    font-size: 1.02rem;
+    font-weight: 500;
+    letter-spacing: -0.011em;
+    line-height: 1.55;
+    padding: 1.05rem 1.15rem;
+    caret-color: #9ec0ff;
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    transition: color 0.3s $ease;
+
+    &::placeholder {
+      color: rgba(176, 190, 220, 0.45);
+      font-family: $font-form;
+      font-weight: 400;
+      letter-spacing: 0.005em;
+      transition: color 0.35s $ease, transform 0.35s $ease, opacity 0.35s $ease;
+    }
+
+    &:focus::placeholder {
+      color: rgba(176, 190, 220, 0.26);
+      transform: translateX(2px);
+    }
+
+    // Kill Chrome/Edge autofill white flash — keep glass look
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-text-fill-color: #f4f6fb !important;
+      caret-color: #9ec0ff;
+      font-family: $font-form;
+      border-radius: inherit;
+      box-shadow: 0 0 0 1000px rgba(14, 18, 28, 0.92) inset !important;
+      transition: background-color 99999s ease-out 0s;
+      filter: none;
+    }
+  }
+
+  textarea {
+    min-height: 176px;
+    resize: vertical;
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  &--area {
+    border-radius: 20px;
+
+    &::after {
+      border-radius: calc(20px - 1px);
+    }
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .crystal-field::after {
+    background:
+      radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.16), transparent 40%),
+      linear-gradient(165deg, rgba(42, 52, 78, 0.95), rgba(20, 24, 36, 0.96));
+  }
+}
+
+.contact {
+  position: relative;
+  // Above page spark trail so form copy stays readable
+  z-index: 5;
+  // Soft fade into the footer so the join never reads as a hard cut
+  padding-bottom: clamp(3rem, 5vw, 4.5rem);
+  min-height: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(14, 15, 20, 0.55) 75%, #{$bg-secondary} 100%);
+
+  &__panel {
+    display: grid;
+    gap: 1.75rem;
+    border: 1px solid rgba(170, 195, 255, 0.16);
+    border-radius: calc(#{$radius-xl} + 4px);
+    background:
+      radial-gradient(ellipse 68% 52% at 92% 0%, rgba(110, 155, 255, 0.26), transparent 58%),
+      radial-gradient(ellipse 48% 42% at 6% 100%, rgba(196, 165, 116, 0.1), transparent 52%),
+      radial-gradient(ellipse 40% 30% at 50% 50%, rgba(40, 55, 95, 0.35), transparent 70%),
+      linear-gradient(155deg, rgba(24, 28, 44, 0.92) 0%, rgba(10, 12, 20, 0.94) 55%, rgba(8, 10, 16, 0.96) 100%);
+    padding: clamp(1.85rem, 4.2vw, 3.35rem);
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(91, 140, 255, 0.06),
+      0 32px 70px rgba(0, 0, 0, 0.42),
+      0 0 90px rgba(70, 120, 255, 0.1);
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+
+    // Soft edge rim
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(120, 160, 255, 0.22) 35%,
+        rgba(255, 255, 255, 0.04) 55%,
+        rgba(196, 165, 116, 0.14) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.85;
+    }
+  }
+
+  &__aura {
+    position: absolute;
+    inset: -18% -8% auto;
+    height: 55%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(91, 140, 255, 0.22), transparent 68%);
+    filter: blur(2px);
+  }
+
+  &__glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(10px);
+
+    &--a {
+      width: min(48%, 320px);
+      height: min(48%, 320px);
+      top: -12%;
+      right: -6%;
+      background: radial-gradient(circle, rgba(120, 165, 255, 0.28), transparent 70%);
+    }
+
+    &--b {
+      width: min(42%, 280px);
+      height: min(42%, 280px);
+      bottom: -16%;
+      left: -8%;
+      background: radial-gradient(circle, rgba(196, 165, 116, 0.12), transparent 70%);
+    }
+  }
+
+  &__grain {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  &__info {
+    position: relative;
+    z-index: 3;
+
+    .section-title {
+      max-width: 11.5ch;
+      letter-spacing: -0.035em;
+    }
+
+    .section-lead {
+      max-width: 32ch;
+      margin-top: 0.85rem;
+      color: rgba(190, 200, 220, 0.78);
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    margin-top: clamp(1.75rem, 3vw, 2.35rem);
+    padding-top: 1.35rem;
+    border-top: 1px solid rgba(160, 180, 230, 0.1);
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    span {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(160, 175, 205, 0.62);
+    }
+
+    a,
+    p {
+      color: #f2f4f8;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      transition: color 0.3s $ease;
+    }
+
+    a {
+      width: fit-content;
+      background-image: linear-gradient(90deg, rgba(150, 185, 255, 0.85), rgba(150, 185, 255, 0.85));
+      background-size: 0% 1px;
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      transition: color 0.3s $ease, background-size 0.35s $ease;
+
+      &:hover {
+        color: #c5d6ff;
+        background-size: 100% 1px;
+      }
+    }
+  }
+
+  &__availability {
+    margin-top: 0.35rem;
+    padding: 0.65rem 0.85rem;
+    width: fit-content;
+    border-radius: 999px;
+    border: 1px solid rgba(111, 191, 115, 0.18);
+    background: rgba(111, 191, 115, 0.06);
+    color: rgba(200, 215, 205, 0.88);
+    font-size: 0.78rem;
+  }
+
+  &__form {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  &__honey {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 220, 0.72);
+      padding-left: 0.2rem;
+      transition: color 0.35s $ease;
+    }
+
+    &:focus-within label {
+      color: rgba(160, 190, 255, 0.95);
+    }
+
+    &.has-error {
+      .crystal-field {
+        --crystal-glow: rgba(255, 110, 110, 0.22);
+
+        &::before {
+          background: linear-gradient(
+            135deg,
+            rgba(255, 190, 190, 0.7),
+            rgba(255, 110, 110, 0.55),
+            rgba(255, 170, 170, 0.45)
+          );
+          opacity: 1;
+          animation: none;
+        }
+      }
+
+      label {
+        color: rgba(255, 160, 160, 0.9);
+      }
+    }
+  }
+
+  &__error {
+    min-height: 1rem;
+    font-size: 0.75rem;
+    color: #ff8e8e;
+    padding-left: 0.2rem;
+  }
+
+  &__note {
+    position: relative;
+    z-index: 6;
+    font-size: 0.78rem;
+    color: rgba(150, 165, 195, 0.62);
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+
+    a {
+      color: $accent;
+    }
+  }
+
+  &__submit {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    min-height: 3.6rem;
+    margin-top: 0.55rem;
+    padding: 0.55rem 0.55rem 0.55rem 1.45rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: #f4f6fb;
+    font-family: $font-display;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background:
+      linear-gradient(#121622, #121622) padding-box,
+      linear-gradient(
+          125deg,
+          rgba(230, 236, 255, 0.55) 0%,
+          rgba(91, 140, 255, 0.55) 28%,
+          rgba(196, 165, 116, 0.42) 58%,
+          rgba(170, 195, 255, 0.5) 100%
+        )
+        border-box;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -12px 28px rgba(0, 0, 0, 0.28),
+      0 14px 36px rgba(0, 0, 0, 0.32),
+      0 0 0 1px rgba(120, 150, 220, 0.08);
+    transition:
+      transform 0.45s $ease,
+      box-shadow 0.45s $ease,
+      color 0.35s $ease,
+      letter-spacing 0.45s $ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(120% 90% at 8% 0%, rgba(255, 255, 255, 0.12), transparent 42%),
+        radial-gradient(80% 70% at 100% 100%, rgba(91, 140, 255, 0.16), transparent 48%),
+        linear-gradient(165deg, rgba(255, 255, 255, 0.05), transparent 55%);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -30% -20%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(150, 185, 255, 0.18), transparent 42%);
+      opacity: 0;
+      transition: opacity 0.45s $ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      color: #fff;
+      letter-spacing: 0.11em;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -12px 28px rgba(0, 0, 0, 0.22),
+        0 18px 42px rgba(0, 0, 0, 0.36),
+        0 0 36px rgba(91, 140, 255, 0.18),
+        0 0 0 1px rgba(170, 195, 255, 0.16);
+
+      &::after {
+        opacity: 1;
+      }
+
+      .contact__submit-shine {
+        opacity: 1;
+        animation: crystal-shine-pass 1.05s $ease;
+      }
+
+      .contact__submit-icon {
+        background: linear-gradient(145deg, #d7e4ff 0%, #7ea4ff 48%, #5b8cff 100%);
+        color: #071018;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.55),
+          0 8px 18px rgba(91, 140, 255, 0.35);
+      }
+
+      .contact__submit-arrow {
+        transform: translateX(1.5px);
+      }
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.985);
+
+      .contact__submit-arrow {
+        transform: translateX(0.5px);
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 0 0 2px #{$bg-primary},
+        0 0 0 4px rgba(140, 175, 255, 0.55),
+        0 14px 36px rgba(0, 0, 0, 0.32);
+    }
+
+    &.is-loading {
+      cursor: wait;
+      letter-spacing: 0.08em;
+    }
+
+    &:disabled {
+      opacity: 0.72;
+      cursor: wait;
+      transform: none;
+    }
+  }
+
+  &__submit-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 28%,
+      rgba(255, 255, 255, 0.28) 48%,
+      transparent 66%
+    );
+    transform: translateX(-130%) skewX(-18deg);
+    opacity: 0;
+  }
+
+  &__submit-label,
+  &__submit-icon,
+  &__submit-loader {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__submit-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.55rem;
+    height: 2.55rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: visible;
+    color: #dce6ff;
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)),
+      rgba(8, 10, 16, 0.65);
+    border: 1px solid rgba(170, 195, 255, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transition:
+      background 0.4s $ease,
+      color 0.4s $ease,
+      box-shadow 0.4s $ease,
+      border-color 0.4s $ease;
+  }
+
+  &__submit-arrow {
+    width: 1.05rem;
+    height: 1.05rem;
+    display: block;
+    flex-shrink: 0;
+    overflow: visible;
+    // Optical center inside the circle — keep motion small so strokes never clip
+    transform: translateX(0.5px);
+    transition: transform 0.35s $ease;
+  }
+
+  &__submit.is-loading &__submit-icon {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__submit-loader {
+    position: absolute;
+    right: 1.15rem;
+    top: 50%;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(200, 215, 255, 0.2);
+    border-top-color: rgba(210, 225, 255, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.8);
+    transition: opacity 0.2s $ease, transform 0.2s $ease;
+
+    .is-loading & {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      animation: contact-spin 0.7s linear infinite;
+    }
+  }
+
+  &__status {
+    font-size: 0.875rem;
+    color: $accent;
+    min-height: 1.25rem;
+  }
+}
+
+@keyframes contact-spin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+@keyframes crystal-shine-pass {
+  0% {
+    opacity: 0;
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(180%) skewX(-18deg);
+  }
+}
+
+@keyframes crystal-border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .contact__panel {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(2.25rem, 4.5vw, 3.75rem);
+    align-items: start;
+    padding: clamp(2.25rem, 3.8vw, 3.6rem) clamp(2.25rem, 4vw, 3.75rem);
+  }
+
+  .contact__form {
+    padding-left: clamp(0.5rem, 1.5vw, 1.25rem);
+    border-left: 1px solid rgba(160, 180, 230, 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact__panel[data-contact-panel]:not(.is-in) {
+    opacity: 0;
+    transform: translateY(4.75rem);
+  }
+}
+
+@media (max-width: ($bp-md - 1)) {
+  .contact {
+    padding-bottom: 2.25rem;
+  }
+
+  .contact__panel {
+    gap: 1.15rem;
+    padding: 1.25rem 1.15rem 1.35rem;
+  }
+
+  .contact__info {
+    .section-label {
+      margin-bottom: 0.55rem;
+    }
+
+    .section-lead {
+      margin-top: 0.45rem;
+    }
+  }
+
+  .contact__details {
+    gap: 0.7rem;
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+  }
+
+  .contact__detail {
+    gap: 0.15rem;
+
+    a,
+    p {
+      font-size: 0.95rem;
+    }
+  }
+
+  .contact__availability {
+    margin-top: 0.15rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .contact__form {
+    gap: 0.85rem;
+  }
+
+  .contact__field {
+    gap: 0.35rem;
+  }
+
+  .crystal-field {
+    border-radius: 16px;
+
+    input,
+    textarea {
+      font-size: 1rem;
+      padding: 0.85rem 0.95rem;
+    }
+
+    textarea {
+      min-height: 132px;
+    }
+  }
+
+  .contact__submit {
+    min-height: 3.15rem;
+    padding-left: 1.2rem;
+    font-size: 0.84rem;
+    letter-spacing: 0.06em;
+    margin-top: 0.1rem;
+  }
+
+  .contact__submit-icon {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crystal-field,
+  .crystal-field input,
+  .crystal-field textarea,
+  .contact__submit,
+  .contact__submit-arrow,
+  .contact__submit-icon,
+  .contact__field label {
+    transition: none;
+  }
+
+  .crystal-field:focus-within::before,
+  .crystal-field:focus-within .crystal-field__sheen::before,
+  .contact__submit:hover .contact__submit-shine {
+    animation: none;
+  }
+}

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="vkTitle vkDesc">
+  <title id="vkTitle">VK — Vidhun Krishna</title>
+  <desc id="vkDesc">Crystal monogram logo integrating the letters V and K</desc>
+  <defs>
+    <linearGradient id="face" x1="20" y1="18" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="42%" stop-color="#C9D6EA" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#5B8CFF" stop-opacity="0.72"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#8EB4FF"/>
+    </linearGradient>
+    <linearGradient id="facet" x1="30" y1="30" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F4F7FB"/>
+      <stop offset="100%" stop-color="#7FA0D4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="42%" cy="34%" r="58%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.42"/>
+      <stop offset="55%" stop-color="#5B8CFF" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#5B8CFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="0.8" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="8" y="8" width="104" height="104" rx="30" fill="#0C0E12" fill-opacity="0.72"/>
+  <rect x="8" y="8" width="104" height="104" rx="30" fill="url(#glow)"/>
+  <rect x="8.75" y="8.75" width="102.5" height="102.5" rx="29" fill="none" stroke="url(#edge)" stroke-width="1.6"/>
+  <rect x="15" y="15" width="90" height="90" rx="24" fill="url(#face)" fill-opacity="0.1" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+
+  <g filter="url(#soft)">
+    <!-- V -->
+    <path d="M24 32 H36 L46 68 L52 50 H62 L48 88 H38 Z" fill="url(#facet)"/>
+    <path d="M36 32 H46 L46 68 L36 32 Z" fill="#FFFFFF" fill-opacity="0.28"/>
+    <!-- Shared crystal seam into K -->
+    <path d="M58 32 H68 V88 H58 Z" fill="url(#facet)"/>
+    <!-- K arms -->
+    <path d="M68 32 H92 L78 54 L68 48 Z" fill="#E7EEF8" fill-opacity="0.92"/>
+    <path d="M68 56 L80 56 L96 88 H80 L68 68 Z" fill="url(#face)" fill-opacity="0.9"/>
+    <!-- refraction -->
+    <path d="M40 38 L48 72" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.3" stroke-linecap="round"/>
+    <path d="M72 40 H84" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="M72 72 L88 84" stroke="#8EB4FF" stroke-opacity="0.5" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+
+  <path d="M22 24 C42 16 74 18 94 30" fill="none" stroke="#FFFFFF" stroke-opacity="0.32" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="96" cy="26" r="3.2" fill="#5B8CFF"/>
+</svg>

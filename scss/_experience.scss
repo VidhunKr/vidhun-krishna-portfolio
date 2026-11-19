@@ -1,0 +1,163 @@
+@use "variables" as *;
+
+.experience {
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 90% 20%, rgba(91, 140, 255, 0.06), transparent 55%),
+    linear-gradient(180deg, transparent 0%, rgba(14, 15, 20, 0.3) 50%, transparent 100%);
+
+  &__header {
+    margin-bottom: 1.5rem;
+  }
+
+  &__timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.55rem;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: linear-gradient(180deg, $accent, $border, transparent);
+  }
+
+  &__item {
+    position: relative;
+    padding: 0 0 2.5rem 2.5rem;
+  }
+
+  &__dot {
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid $accent;
+    background: $bg-primary;
+    box-shadow: 0 0 0 4px $accent-soft;
+  }
+
+  &__role {
+    font-family: $font-display;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  &__company {
+    color: $accent;
+    font-size: 0.9375rem;
+    margin-top: 0.25rem;
+  }
+
+  &__duration {
+    color: $text-muted;
+    font-size: 0.8125rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0.9rem;
+  }
+
+  &__duties {
+    color: $text-secondary;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+
+    li {
+      position: relative;
+      padding-left: 1rem;
+      line-height: 1.6;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.65rem;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: $border-strong;
+      }
+    }
+  }
+
+  &__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  &__empty {
+    border: 1px dashed $border-strong;
+    border-radius: $radius-lg;
+    padding: 2rem;
+    background: rgba(20, 24, 40, 0.45);
+
+    p {
+      color: $text-secondary;
+      max-width: 48ch;
+      line-height: 1.7;
+    }
+
+    code {
+      color: $accent;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+@media (min-width: $bp-md) {
+  .experience__timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .experience__item {
+    width: 50%;
+    padding: 0 2.5rem 3rem;
+
+    &:nth-child(odd) {
+      align-self: flex-start;
+      text-align: right;
+      padding-left: 0;
+      padding-right: 2.5rem;
+
+      .experience__dot {
+        left: auto;
+        right: -6px;
+      }
+
+      .experience__duties li {
+        padding-left: 0;
+        padding-right: 1rem;
+
+        &::before {
+          left: auto;
+          right: 0;
+        }
+      }
+
+      .experience__tech {
+        justify-content: flex-end;
+      }
+    }
+
+    &:nth-child(even) {
+      align-self: flex-end;
+      padding-left: 2.5rem;
+
+      .experience__dot {
+        left: -6px;
+      }
+    }
+  }
+}

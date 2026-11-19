@@ -1,0 +1,34 @@
+@use "variables" as *;
+
+.page-spark-trail {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.88;
+  transition: opacity 0.25s $ease;
+  contain: strict;
+
+  &.is-rich {
+    opacity: 1;
+  }
+
+  // Hidden while nav/footer menus are hovered
+  &.is-menu-hidden {
+    opacity: 0 !important;
+  }
+}
+
+@media (pointer: coarse), (max-width: $bp-md) {
+  .page-spark-trail {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-spark-trail {
+    display: none !important;
+  }
+}
