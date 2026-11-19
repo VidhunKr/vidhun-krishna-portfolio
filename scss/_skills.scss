@@ -583,12 +583,15 @@
   &__name {
     position: relative;
     z-index: 1;
+    flex: 1 1 auto;
+    min-width: 0;
     font-family: $font-body;
     font-size: 0.84rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     color: rgba(236, 240, 250, 0.94);
     line-height: 1.25;
+    overflow-wrap: anywhere;
     transition: color 0.3s $ease;
   }
 
@@ -678,6 +681,41 @@
 }
 
 @media (max-width: ($bp-sm - 1)) {
+  .skills__shell {
+    padding: 0.7rem;
+  }
+
+  .skills__slide {
+    padding: 0.7rem 0.6rem 0.8rem;
+  }
+
+  .skills__grid {
+    gap: 0.45rem;
+  }
+
+  .skills__card {
+    gap: 0.42rem;
+    min-height: 3.35rem;
+    padding: 0.55rem 0.5rem;
+  }
+
+  .skills__logo {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 9px;
+
+    img,
+    .skills__logo-mark {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  .skills__name {
+    font-size: 0.74rem;
+    letter-spacing: -0.02em;
+  }
+
   .skills__chrome {
     flex-wrap: wrap;
   }
@@ -689,6 +727,22 @@
   .skills__progress {
     order: 3;
     flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .skills__card {
+    gap: 0.35rem;
+    padding: 0.5rem 0.42rem;
+  }
+
+  .skills__logo {
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  .skills__name {
+    font-size: 0.7rem;
   }
 }
 
