@@ -1,15 +1,17 @@
 (function () {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Lenis smooth scroll — snappier + lighter than heavy smoothing
+  // Lenis smooth scroll — longer coast, softer wheel response
   let lenis;
   if (!reducedMotion && typeof Lenis !== "undefined") {
     lenis = new Lenis({
-      duration: 0.95,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.65,
+      easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
-      touchMultiplier: 1.4,
-      wheelMultiplier: 0.92,
+      syncTouch: false,
+      touchMultiplier: 1.55,
+      wheelMultiplier: 0.68,
+      infinite: false,
     });
 
     window.__lenis = lenis;
@@ -25,7 +27,7 @@
         e.preventDefault();
         const header = document.querySelector("[data-nav]");
         const offset = header ? -(header.offsetHeight + 8) : -88;
-        lenis.scrollTo(target, { offset, duration: 1.15 });
+        lenis.scrollTo(target, { offset, duration: 1.55 });
       });
     });
   }

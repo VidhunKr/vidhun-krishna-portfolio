@@ -1,4 +1,16 @@
 (function () {
+  // Block native image drag ghost across the whole page
+  document.addEventListener(
+    "dragstart",
+    (e) => {
+      if (e.target instanceof HTMLImageElement) e.preventDefault();
+    },
+    { capture: true }
+  );
+  document.querySelectorAll("img").forEach((img) => {
+    img.setAttribute("draggable", "false");
+  });
+
   const yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
@@ -97,7 +109,7 @@
     const [slug, color] = entry;
     const src = `https://cdn.simpleicons.org/${slug}/${color}`;
     const initials = techInitials(name);
-    return `<img src="${src}" alt="" width="24" height="24" loading="lazy" decoding="async" data-fallback="${initials}" onerror="this.outerHTML='<span class=&quot;skills__logo-mark&quot;>'+this.dataset.fallback+'</span>'" />`;
+    return `<img src="${src}" alt="" width="24" height="24" loading="lazy" decoding="async" draggable="false" data-fallback="${initials}" onerror="this.outerHTML='<span class=&quot;skills__logo-mark&quot;>'+this.dataset.fallback+'</span>'" />`;
   }
 
   const CATEGORY_ACCENTS = {
@@ -535,11 +547,21 @@
           : `<span class="projects__link projects__link--disabled">GitHub — private</span>`;
 
       const portraitMedia = /clikpay/i.test(project.id || "") ? " projects__media--portrait" : "";
+      const jpg = project.image;
+      const webp = /\.jpe?g$/i.test(jpg) ? jpg.replace(/\.jpe?g$/i, ".webp") : "";
+      const loading = index < 2 ? "eager" : "lazy";
+      const fetchPriority = index === 0 ? ' fetchpriority="high"' : "";
+      const media = webp
+        ? `<picture>
+            <source srcset="${webp}" type="image/webp" />
+            <img src="${jpg}" alt="${project.name} preview" loading="${loading}" decoding="async" draggable="false"${fetchPriority} width="1200" height="750" />
+          </picture>`
+        : `<img src="${jpg}" alt="${project.name} preview" loading="${loading}" decoding="async" draggable="false"${fetchPriority} width="1200" height="750" />`;
       return `
       <article class="projects__item ${project.featured ? "projects__item--featured" : ""}">
         <div class="projects__media${portraitMedia}">
           <span class="projects__badge">${project.badge || "Project"}</span>
-          <img src="${project.image}" alt="${project.name} preview" loading="${index === 0 ? "eager" : "lazy"}" width="1200" height="750" />
+          ${media}
         </div>
         <div class="projects__content">
           <p class="projects__category">${project.category}</p>

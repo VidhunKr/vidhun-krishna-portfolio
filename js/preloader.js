@@ -248,15 +248,37 @@
     }, 36);
   }
 
+  // Warm critical above-the-fold images so the hero never pops in late
+  function warmCriticalImages() {
+    const urls = [
+      "assets/images/portrait-hero.webp?v=3",
+      "assets/images/portrait-hero.jpg?v=3",
+      "assets/images/logo/vk-logo-dark.svg",
+      "assets/images/project-aviators.webp",
+    ];
+    return Promise.all(
+      urls.map(
+        (src) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            img.decoding = "async";
+            img.onload = img.onerror = () => resolve();
+            img.src = src;
+          })
+      )
+    );
+  }
+
   setProgress(3);
   if (!reducedMotion) tickFakeProgress();
   else setProgress(100);
 
-  if (document.readyState === "complete") {
-    markReady();
-  } else {
-    window.addEventListener("load", markReady, { once: true });
-  }
+  const assetsGate = Promise.all([
+    warmCriticalImages(),
+    document.readyState === "complete"
+      ? Promise.resolve()
+      : new Promise((resolve) => window.addEventListener("load", resolve, { once: true })),
+  ]).then(markReady);
 
   window.setTimeout(() => {
     if (!finished) {
@@ -265,4 +287,7 @@
       finish();
     }
   }, SAFE_TIMEOUT);
+
+  // Keep the promise referenced so bundlers/linters don't drop it
+  void assetsGate;
 })();

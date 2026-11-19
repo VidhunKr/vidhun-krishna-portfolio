@@ -282,8 +282,8 @@
       const lenis = window.__lenis;
       if (lenis && typeof lenis.scrollTo === "function") {
         lenis.scrollTo(0, {
-          duration: 1.35,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          duration: 1.7,
+          easing: (t) => 1 - Math.pow(1 - t, 4),
         });
         return;
       }
