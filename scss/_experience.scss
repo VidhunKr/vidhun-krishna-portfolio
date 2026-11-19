@@ -18,13 +18,15 @@
     gap: 0;
   }
 
+  // Shared axis: line + rings share the same center (dot is 12px → center at 6px)
   &__timeline::before {
     content: "";
     position: absolute;
-    left: 0.55rem;
+    left: 6px;
     top: 0.4rem;
     bottom: 0.4rem;
     width: 1px;
+    transform: translateX(-50%);
     background: linear-gradient(180deg, $accent, $border, transparent);
   }
 
@@ -40,9 +42,10 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 1px solid $accent;
+    border: 1.5px solid $accent;
     background: $bg-primary;
     box-shadow: 0 0 0 4px $accent-soft;
+    box-sizing: border-box;
   }
 
   &__role {

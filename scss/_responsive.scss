@@ -258,8 +258,8 @@
   }
 
   .experience__timeline::before {
-    left: 0.55rem;
-    transform: none;
+    left: 6px;
+    transform: translateX(-50%);
   }
 
   .experience__item {
@@ -275,6 +275,7 @@
     .experience__dot {
       left: 0 !important;
       right: auto !important;
+      top: 0.45rem;
     }
 
     .experience__duration {
