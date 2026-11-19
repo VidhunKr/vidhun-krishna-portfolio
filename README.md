@@ -3,7 +3,7 @@
 Personal portfolio of **Vidhun Krishna M**, a Frontend Developer based in Kerala, India.  
 Built to showcase clean UI, thoughtful motion, and production-ready frontend craft.
 
-[![Live Site](https://img.shields.io/badge/Live-vidhunkrishna.com-5b8cff?style=flat-square)](https://vidhunkrishna.com)
+[![Live Site](https://img.shields.io/badge/Live-vidhun-krishna-portfolio.vercel.app-5b8cff?style=flat-square)](https://vidhun-krishna-portfolio.vercel.app)
 [![Tech](https://img.shields.io/badge/Stack-HTML%20·%20SCSS%20·%20JS-0e0f14?style=flat-square)](#tech-stack)
 [![Focus](https://img.shields.io/badge/Focus-Angular%20·%20TypeScript-111827?style=flat-square)](#)
 
@@ -13,7 +13,7 @@ Built to showcase clean UI, thoughtful motion, and production-ready frontend cra
 
 | Resource | Link |
 | --- | --- |
-| Website | [vidhunkrishna.com](https://vidhunkrishna.com) |
+| Website | [vidhun-krishna-portfolio.vercel.app](https://vidhun-krishna-portfolio.vercel.app) |
 | Email | [vidhunkrishna007@gmail.com](mailto:vidhunkrishna007@gmail.com) |
 | LinkedIn | [vidhun-krishna-m](https://www.linkedin.com/in/vidhun-krishna-m) |
 | GitHub | [VidhunKr](https://github.com/VidhunKr) |
