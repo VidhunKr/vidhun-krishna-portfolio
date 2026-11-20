@@ -127,19 +127,19 @@
     dialog.classList.toggle("form-dialog--error", !isSuccess);
 
     if (dialogEyebrow) {
-      dialogEyebrow.textContent = isSuccess ? "Delivered" : "Failed";
+      dialogEyebrow.textContent = isSuccess ? "Sent successfully" : "Send failed";
     }
     if (dialogTitle) {
-      dialogTitle.textContent = isSuccess ? "Message received" : "Couldn't send that";
+      dialogTitle.textContent = isSuccess ? "Message delivered" : "Couldn't send that";
     }
     if (dialogDesc) {
       dialogDesc.textContent = isSuccess
-        ? "Thanks for reaching out — I’ll reply as soon as I can."
-        : "Something went wrong on the way. Please try again in a moment.";
+        ? "Thanks for reaching out — I’ll get back to you soon."
+        : "Something went wrong. Please try again in a moment.";
     }
     if (dialogMetaText) {
       dialogMetaText.textContent = isSuccess
-        ? "Saved to Sheets & emailed"
+        ? "Notification sent to my inbox"
         : "No message was delivered";
     }
     if (dialogActionLabel) {

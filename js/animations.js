@@ -1,6 +1,23 @@
 (function () {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  function revealContactPanelNow() {
+    const panel = document.querySelector("[data-contact-panel]");
+    if (!panel || panel.classList.contains("is-in")) return;
+    panel.classList.add("is-in");
+    if (typeof gsap !== "undefined") {
+      const rises = panel.querySelectorAll("[data-contact-rise]");
+      gsap.killTweensOf([panel, ...rises]);
+      gsap.set(panel, { autoAlpha: 1, y: 0, clearProps: "" });
+      if (rises.length) gsap.set(rises, { autoAlpha: 1, y: 0 });
+    } else {
+      panel.style.opacity = "1";
+      panel.style.transform = "none";
+    }
+  }
+
+  window.__revealContactPanel = revealContactPanelNow;
+
   // Lenis smooth scroll — longer coast, softer wheel response
   let lenis;
   if (!reducedMotion && typeof Lenis !== "undefined") {
@@ -25,10 +42,18 @@
         const target = document.querySelector(id);
         if (!target) return;
         e.preventDefault();
+        if (id === "#contact") revealContactPanelNow();
         const header = document.querySelector("[data-nav]");
         const offset = header ? -(header.offsetHeight + 8) : -88;
-        lenis.scrollTo(target, { offset, duration: 1.55 });
+        lenis.scrollTo(target, {
+          offset,
+          duration: id === "#contact" ? 0.85 : 1.15,
+        });
       });
+    });
+  } else {
+    document.querySelectorAll('a[href="#contact"]').forEach((anchor) => {
+      anchor.addEventListener("click", () => revealContactPanelNow());
     });
   }
 
@@ -89,17 +114,17 @@
       },
     });
 
-    // Contact panel: rise from bottom + staggered columns
+    // Contact panel: light rise — keep form readable quickly
     const contactPanel = document.querySelector("[data-contact-panel]");
-    if (contactPanel) {
+    if (contactPanel && !contactPanel.classList.contains("is-in")) {
       const rises = contactPanel.querySelectorAll("[data-contact-rise]");
-      gsap.set(contactPanel, { autoAlpha: 0, y: 64 });
-      if (rises.length) gsap.set(rises, { autoAlpha: 0, y: 36 });
+      gsap.set(contactPanel, { autoAlpha: 0.45, y: 18 });
+      if (rises.length) gsap.set(rises, { autoAlpha: 0.55, y: 12 });
 
       const contactTl = gsap.timeline({
         scrollTrigger: {
           trigger: contactPanel,
-          start: "top 88%",
+          start: "top 96%",
           once: true,
         },
         defaults: { ease: "power2.out" },
@@ -108,7 +133,7 @@
       contactTl.to(contactPanel, {
         autoAlpha: 1,
         y: 0,
-        duration: 0.95,
+        duration: 0.4,
         onStart() {
           contactPanel.classList.add("is-in");
         },
@@ -120,10 +145,10 @@
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.75,
-            stagger: 0.1,
+            duration: 0.35,
+            stagger: 0.04,
           },
-          "-=0.55"
+          "-=0.28"
         );
       }
     }

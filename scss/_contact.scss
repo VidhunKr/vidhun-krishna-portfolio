@@ -727,8 +727,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .contact__panel[data-contact-panel]:not(.is-in) {
-    opacity: 0;
-    transform: translateY(4.75rem);
+    opacity: 0.35;
+    transform: translateY(1.25rem);
   }
 }
 
