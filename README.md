@@ -13,7 +13,19 @@ Focused on Angular, TypeScript, and modern UI.
 
 ## Stack
 
-HTML · SCSS · JavaScript · GSAP · Lenis
+HTML · SCSS · JavaScript · GSAP · Lenis · Google Apps Script
+
+## Portfolio chatbot
+
+Floating assistant answers from `js/data/chat-replies.js` (no API key).  
+Optional chat email uses the same Apps Script URL as the contact form.
+
+## Scripts
+
+```bash
+npm run build:css
+npm run watch:css
+```
 
 ## License
 

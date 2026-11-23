@@ -12,11 +12,11 @@
     />
     <meta
       name="description"
-      content="Vidhun Krishna — Frontend Developer from Kerala, India. Building modern, responsive Angular &amp; TypeScript apps with thoughtful UI, RxJS, and full-stack Node.js experience."
+      content="Vidhun Krishna — Frontend Developer from Kerala, India. Angular, TypeScript, RxJS, Ionic, SCSS, Angular Material, Node.js, Express, MongoDB, and REST APIs — building responsive SPAs and mobile apps."
     />
     <meta
       name="keywords"
-      content="Vidhun Krishna, Frontend Developer, Angular Developer, TypeScript, JavaScript, Kerala, Kochi, India, UI Developer, SPA, Ionic, Node.js, Portfolio"
+      content="Vidhun Krishna, Frontend Developer, Angular Developer, Angular, TypeScript, JavaScript, RxJS, HTML5, CSS3, SCSS, Bootstrap, Angular Material, Ionic, Cordova, Node.js, Express.js, MongoDB, JWT, REST API, React, Firebase, Chart.js, Git, Figma, SPA, Kerala, Kochi, India, UI Developer, Portfolio"
     />
     <meta name="author" content="Vidhun Krishna M" />
     <meta name="owner" content="Vidhun Krishna" />
@@ -30,7 +30,7 @@
     <meta name="subject" content="Frontend Developer Portfolio — Vidhun Krishna" />
     <meta
       name="classification"
-      content="Portfolio, Frontend Development, Angular, TypeScript, Web Development"
+      content="Portfolio, Frontend Development, Angular, TypeScript, Ionic, Node.js, MongoDB, Web Development"
     />
 
     <!-- Local SEO -->
@@ -57,7 +57,7 @@
     />
     <meta
       property="og:description"
-      content="Frontend Developer from Kerala, India. Crafting modern, responsive Angular &amp; TypeScript experiences with thoughtful UI."
+      content="Frontend Developer from Kerala, India. Angular, TypeScript, RxJS, Ionic, Node.js, Express, and MongoDB — responsive SPAs and mobile apps."
     />
     <meta property="og:image" content="https://vidhun-krishna-portfolio.vercel.app/assets/images/og-preview.jpg" />
     <meta
@@ -80,7 +80,7 @@
     />
     <meta
       name="twitter:description"
-      content="Frontend Developer from Kerala, India. Crafting modern, responsive Angular &amp; TypeScript experiences with thoughtful UI."
+      content="Frontend Developer from Kerala, India. Angular, TypeScript, RxJS, Ionic, Node.js, Express, and MongoDB — responsive SPAs and mobile apps."
     />
     <meta name="twitter:image" content="https://vidhun-krishna-portfolio.vercel.app/assets/images/og-preview.jpg" />
     <meta
@@ -111,7 +111,7 @@
         "url": "https://vidhun-krishna-portfolio.vercel.app/",
         "image": "https://vidhun-krishna-portfolio.vercel.app/assets/images/portrait-hero.jpg",
         "jobTitle": "Frontend Developer",
-        "description": "Frontend Developer specializing in Angular, TypeScript, and modern UI — based in Kerala, India.",
+        "description": "Frontend Developer specializing in Angular, TypeScript, RxJS, Ionic, and full-stack Node.js / MongoDB — based in Kerala, India.",
         "email": "mailto:vidhunkrishna007@gmail.com",
         "telephone": "+91-7012305384",
         "address": {
@@ -127,11 +127,31 @@
           "Angular",
           "TypeScript",
           "JavaScript",
+          "HTML5",
+          "CSS3",
+          "SCSS",
+          "Bootstrap",
+          "Angular Material",
           "RxJS",
+          "Reactive Forms",
+          "Angular Routing",
           "Ionic",
+          "Cordova",
           "Node.js",
+          "Express.js",
+          "REST API",
+          "JWT",
+          "MongoDB",
+          "React",
+          "Firebase",
+          "Chart.js",
+          "Git",
+          "GitHub",
+          "Figma",
           "Frontend Development",
-          "Responsive Web Design"
+          "Responsive Web Design",
+          "SPA Development",
+          "Mobile App Development"
         ]
       }
     </script>
@@ -141,7 +161,7 @@
         "@type": "WebSite",
         "name": "Vidhun Krishna — Frontend Developer",
         "url": "https://vidhun-krishna-portfolio.vercel.app/",
-        "description": "Portfolio of Vidhun Krishna, Frontend Developer from Kerala, India.",
+        "description": "Portfolio of Vidhun Krishna — Frontend Developer skilled in Angular, TypeScript, Ionic, Node.js, and MongoDB. Based in Kerala, India.",
         "publisher": {
           "@type": "Person",
           "name": "Vidhun Krishna M"
@@ -920,6 +940,146 @@
       </div>
     </footer>
 
+    <div class="chatbot" data-chatbot>
+      <div
+        class="chatbot__panel"
+        data-chatbot-panel
+        role="dialog"
+        aria-modal="false"
+        aria-hidden="true"
+        aria-labelledby="chatbot-title"
+        aria-describedby="chatbot-subtitle"
+      >
+        <div class="chatbot__header">
+          <div class="chatbot__avatar" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M3.5 6h5.2L14 22.5 16.4 14h5L16.2 26.5H11.2L3.5 6z" fill="#F5F7FB" />
+              <path
+                d="M18.2 6H23v7.2l5.6-7.2H32L25.4 15.2 32 26.5h-4.8L22.8 18v8.5h-4.6V6z"
+                fill="#C4A574"
+                fill-opacity="0.95"
+              />
+            </svg>
+            <span class="chatbot__avatar-dot"></span>
+          </div>
+          <div class="chatbot__heading">
+            <p class="chatbot__title" id="chatbot-title">Ask About Vidhun</p>
+            <p class="chatbot__subtitle" id="chatbot-subtitle">Portfolio assistant · Online</p>
+          </div>
+          <div class="chatbot__header-actions">
+            <button
+              type="button"
+              class="chatbot__icon-btn"
+              data-chatbot-minimize
+              aria-label="Minimize chat"
+            >
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 10h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="chatbot__messages" data-chatbot-messages aria-live="polite"></div>
+
+        <div class="chatbot__suggestions" data-chatbot-suggestions>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="What are your technical skills?">
+            What are your technical skills?
+          </button>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="Tell me about your projects.">
+            Tell me about your projects.
+          </button>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="What is your Angular experience?">
+            What is your Angular experience?
+          </button>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="Do you have experience with Ionic?">
+            Do you have experience with Ionic?
+          </button>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="What backend technologies do you know?">
+            What backend technologies do you know?
+          </button>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="How can I hire you?">
+            How can I hire you?
+          </button>
+          <button type="button" class="chatbot__chip" data-chatbot-suggestion="How can I contact you?">
+            How can I contact you?
+          </button>
+        </div>
+
+        <p class="chatbot__status" data-chatbot-status aria-live="polite"></p>
+
+        <form class="chatbot__composer" data-chatbot-form>
+          <div class="chatbot__input-row">
+            <textarea
+              id="chatbot-input"
+              class="chatbot__input"
+              data-chatbot-input
+              rows="1"
+              maxlength="800"
+              placeholder="Ask about skills, projects, hiring…"
+              autocomplete="off"
+              aria-label="Message about Vidhun"
+            ></textarea>
+            <button type="submit" class="chatbot__send" data-chatbot-send aria-label="Send message" disabled>
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M4 10h10.5M10.5 5.5L15 10l-4.5 4.5"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="chatbot__meta-row">
+            <div class="chatbot__actions">
+              <button type="button" class="chatbot__text-btn" data-chatbot-new>New conversation</button>
+            </div>
+            <span data-chatbot-char>0/800</span>
+          </div>
+        </form>
+
+        <p class="chatbot__footer">Answers from Vidhun&rsquo;s portfolio profile</p>
+      </div>
+
+      <button
+        type="button"
+        class="chatbot__launcher"
+        data-chatbot-launcher
+        aria-label="Open portfolio assistant"
+        aria-expanded="false"
+        aria-controls="chatbot-title"
+      >
+        <span class="chatbot__launcher-badge" aria-hidden="true"></span>
+        <svg class="chatbot__launcher-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="chatVkFace" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F5F7FB" />
+              <stop offset="100%" stop-color="#C4A574" />
+            </linearGradient>
+          </defs>
+          <path d="M3.5 6h5.2L14 22.5 16.4 14h5L16.2 26.5H11.2L3.5 6z" fill="url(#chatVkFace)" />
+          <path
+            d="M18.2 6H23v7.2l5.6-7.2H32L25.4 15.2 32 26.5h-4.8L22.8 18v8.5h-4.6V6z"
+            fill="#E8EEF8"
+            fill-opacity="0.92"
+          />
+        </svg>
+        <span class="chatbot__launcher-close" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.2" opacity="0.35" />
+            <path
+              d="M8.2 8.2l7.6 7.6M15.8 8.2l-7.6 7.6"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+
     <div
       class="form-dialog"
       data-form-dialog
@@ -1002,6 +1162,8 @@
     <script src="js/data/experience.js" defer></script>
     <script src="js/snackbar.js" defer></script>
     <script src="js/contact.js" defer></script>
+    <script src="js/data/chat-replies.js" defer></script>
+    <script src="js/chatbot.js" defer></script>
     <script src="js/main.js" defer></script>
     <script src="js/navigation.js" defer></script>
     <script src="js/animations.js" defer></script>

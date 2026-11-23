@@ -197,7 +197,8 @@
       const watermark = footer.querySelector("[data-footer-parallax]");
       const monogram = footer.querySelector("[data-footer-parallax-slow]");
       if (watermark) {
-        gsap.set(watermark, { xPercent: -50, yPercent: -50 });
+        // Keep horizontal center via CSS; only scrub vertical offset
+        gsap.set(watermark, { x: 0, yPercent: -50 });
         gsap.to(watermark, {
           y: 40,
           ease: "none",

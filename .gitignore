@@ -3,4 +3,6 @@ node_modules/
 *.log
 .css.map
 .env
-.env.local
+.env.*
+!.env.example
+.vercel

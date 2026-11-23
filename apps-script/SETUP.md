@@ -1,6 +1,6 @@
-# Google Apps Script contact form (no Gmail password)
+# Google Apps Script (contact form + AI chat)
 
-Saves each message to a Google Sheet and emails you with `MailApp` — no Node backend, no App Password.
+Saves contact messages and AI chat transcripts to Google Sheets, and emails you with `MailApp`.
 
 ## Setup
 
@@ -12,6 +12,16 @@ Saves each message to a Google Sheet and emails you with `MailApp` — no Node b
    - Who has access: **Anyone**
 5. Copy the `/exec` URL into `js/config.js` → `GOOGLE_SCRIPT_URL`.
 
+## Sheets
+
+- **ContactForm** — contact form rows
+- **AI Chat Conversations** — chatbot transcripts (created automatically)
+
+## Optional secret
+
+If you set Script Property `CHAT_EMAIL_SECRET`, chat posts must include matching `chatSecret`.  
+If unset, chat emails work like the public contact form.
+
 ## After script edits
 
-**Deploy → Manage deployments → Edit → New version**, then Deploy again so the live URL picks up changes.
+**Deploy → Manage deployments → Edit → New version**, then Deploy again.
