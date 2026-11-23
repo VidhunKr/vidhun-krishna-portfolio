@@ -12,11 +12,12 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: $header-h;
   font-size: 16px;
+  background: #000000;
 }
 
 body {
   font-family: $font-body;
-  background: $bg-primary;
+  background: #000000;
   color: $text-primary;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

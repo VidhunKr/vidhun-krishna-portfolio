@@ -202,7 +202,7 @@
         position: fixed;
         inset: 0;
         z-index: 9999;
-        background: #0e1018;
+        background: #000000;
       }
       html.lenis,
       html.lenis body {
@@ -1020,29 +1020,39 @@
               autocomplete="off"
               aria-label="Message about Vidhun"
             ></textarea>
-            <button type="submit" class="chatbot__send" data-chatbot-send aria-label="Send message" disabled>
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path
-                  d="M4 10h10.5M10.5 5.5L15 10l-4.5 4.5"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
+            <button type="submit" class="chatbot__send" data-chatbot-send disabled>Send</button>
           </div>
           <div class="chatbot__meta-row">
             <div class="chatbot__actions">
-              <button type="button" class="chatbot__text-btn" data-chatbot-new>New conversation</button>
+              <button type="button" class="chatbot__new-btn" data-chatbot-new>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path
+                    d="M3.2 8a4.8 4.8 0 0 1 8.2-3.4M12.8 8a4.8 4.8 0 0 1-8.2 3.4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M11.2 2.4v2.4H8.8M4.8 13.6v-2.4h2.4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>New conversation</span>
+              </button>
             </div>
-            <span data-chatbot-char>0/800</span>
+            <span class="chatbot__char" data-chatbot-char>0/800</span>
           </div>
         </form>
 
         <p class="chatbot__footer">Answers from Vidhun&rsquo;s portfolio profile</p>
       </div>
 
+      <div class="chatbot__tip" data-chatbot-tip hidden role="status" aria-live="polite">
+        <span class="chatbot__tip-text" data-chatbot-tip-text></span>
+      </div>
       <button
         type="button"
         class="chatbot__launcher"
@@ -1051,21 +1061,25 @@
         aria-expanded="false"
         aria-controls="chatbot-title"
       >
+        <span class="chatbot__launcher-ring" aria-hidden="true"></span>
+        <span class="chatbot__launcher-core" aria-hidden="true">
+          <svg class="chatbot__launcher-mark" viewBox="0 0 32 32" fill="none">
+            <defs>
+              <linearGradient id="chatVkFace" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#F5F7FB" />
+                <stop offset="55%" stop-color="#E8EEF8" />
+                <stop offset="100%" stop-color="#C4A574" />
+              </linearGradient>
+            </defs>
+            <path d="M3.5 6h5.2L14 22.5 16.4 14h5L16.2 26.5H11.2L3.5 6z" fill="url(#chatVkFace)" />
+            <path
+              d="M18.2 6H23v7.2l5.6-7.2H32L25.4 15.2 32 26.5h-4.8L22.8 18v8.5h-4.6V6z"
+              fill="#E8EEF8"
+              fill-opacity="0.95"
+            />
+          </svg>
+        </span>
         <span class="chatbot__launcher-badge" aria-hidden="true"></span>
-        <svg class="chatbot__launcher-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="chatVkFace" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#F5F7FB" />
-              <stop offset="100%" stop-color="#C4A574" />
-            </linearGradient>
-          </defs>
-          <path d="M3.5 6h5.2L14 22.5 16.4 14h5L16.2 26.5H11.2L3.5 6z" fill="url(#chatVkFace)" />
-          <path
-            d="M18.2 6H23v7.2l5.6-7.2H32L25.4 15.2 32 26.5h-4.8L22.8 18v8.5h-4.6V6z"
-            fill="#E8EEF8"
-            fill-opacity="0.92"
-          />
-        </svg>
         <span class="chatbot__launcher-close" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.2" opacity="0.35" />

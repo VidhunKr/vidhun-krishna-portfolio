@@ -9,6 +9,8 @@
 
   const panel = root.querySelector("[data-chatbot-panel]");
   const launcher = root.querySelector("[data-chatbot-launcher]");
+  const tipEl = root.querySelector("[data-chatbot-tip]");
+  const tipTextEl = root.querySelector("[data-chatbot-tip-text]");
   const messagesEl = root.querySelector("[data-chatbot-messages]");
   const form = root.querySelector("[data-chatbot-form]");
   const input = root.querySelector("[data-chatbot-input]");
@@ -17,10 +19,25 @@
   const suggestionsEl = root.querySelector("[data-chatbot-suggestions]");
   const charCountEl = root.querySelector("[data-chatbot-char]");
 
+  const TIP_MESSAGES = [
+    "Ask me anything!",
+    "Curious about my skills?",
+    "Want project details?",
+    "Need a quick intro?",
+    "How can I help?",
+  ];
+  const TIP_SHOW_MS = 4200;
+  const TIP_FIRST_DELAY_MS = 4500;
+  const TIP_INTERVAL_MS = 22000;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   let open = false;
   let busy = false;
   let submitted = false;
   let state = loadState();
+  let tipIndex = 0;
+  let tipHideTimer = 0;
+  let tipLoopTimer = 0;
 
   function uid(prefix) {
     const r =
@@ -59,12 +76,42 @@
     statusEl.classList.toggle("is-error", Boolean(isError && text));
   }
 
+  function hideTip() {
+    window.clearTimeout(tipHideTimer);
+    tipEl?.classList.remove("is-visible");
+    if (tipEl) tipEl.hidden = true;
+  }
+
+  function showTip() {
+    if (!tipEl || !tipTextEl || open || reducedMotion) return;
+    tipTextEl.textContent = TIP_MESSAGES[tipIndex % TIP_MESSAGES.length];
+    tipIndex += 1;
+    tipEl.hidden = false;
+    // Force reflow so the enter transition always plays
+    void tipEl.offsetWidth;
+    tipEl.classList.add("is-visible");
+    window.clearTimeout(tipHideTimer);
+    tipHideTimer = window.setTimeout(hideTip, TIP_SHOW_MS);
+  }
+
+  function scheduleTips() {
+    if (reducedMotion || !tipEl) return;
+    window.clearTimeout(tipLoopTimer);
+    tipLoopTimer = window.setTimeout(function tipTick() {
+      if (!open) showTip();
+      tipLoopTimer = window.setTimeout(tipTick, TIP_INTERVAL_MS);
+    }, TIP_FIRST_DELAY_MS);
+  }
+
   function setOpen(next) {
     open = next;
     root.classList.toggle("is-open", open);
     launcher?.setAttribute("aria-expanded", open ? "true" : "false");
     panel?.setAttribute("aria-hidden", open ? "false" : "true");
-    if (open) window.setTimeout(() => input?.focus(), 160);
+    if (open) {
+      hideTip();
+      window.setTimeout(() => input?.focus(), 160);
+    }
   }
 
   function scrollBottom() {
@@ -221,6 +268,8 @@
   }
 
   launcher?.addEventListener("click", () => setOpen(!open));
+  launcher?.addEventListener("mouseenter", hideTip);
+  launcher?.addEventListener("focus", hideTip);
   root.querySelector("[data-chatbot-minimize]")?.addEventListener("click", () => {
     void emailTranscript("close", true);
     setOpen(false);
@@ -260,4 +309,5 @@
   restore();
   updateChar();
   if (sendBtn) sendBtn.disabled = true;
+  scheduleTips();
 })();
