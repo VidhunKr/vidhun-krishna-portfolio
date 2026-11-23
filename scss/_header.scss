@@ -4,7 +4,7 @@
   --nav-pad-y: 0.7rem;
   --nav-pad-x: 0.85rem;
   --nav-radius: 22px;
-  --nav-glass: rgba(14, 16, 26, 0.72);
+  --nav-glass: rgba(0, 0, 0, 0.78);
   --nav-border: rgba(150, 175, 255, 0.16);
   --nav-shadow: 0 12px 40px rgba(0, 0, 0, 0.32);
 
@@ -22,7 +22,7 @@
     --nav-pad-y: 0.48rem;
     --nav-pad-x: 0.7rem;
     --nav-radius: 18px;
-    --nav-glass: rgba(10, 12, 18, 0.96);
+    --nav-glass: rgba(0, 0, 0, 0.94);
     --nav-border: rgba(170, 190, 255, 0.2);
     --nav-shadow: 0 16px 44px rgba(0, 0, 0, 0.48);
     top: 12px;
@@ -472,9 +472,7 @@
   position: fixed;
   inset: 0;
   z-index: 105;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91, 140, 255, 0.1), transparent 55%),
-    rgba(8, 9, 14, 0.96);
+  background: rgba(0, 0, 0, 0.96);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   opacity: 0;

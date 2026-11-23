@@ -23,19 +23,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-// Continuous midnight-navy atmosphere (matches footer depth)
+// Pure black page canvas
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background:
-    radial-gradient(ellipse 90% 55% at 12% -8%, rgba(91, 140, 255, 0.12), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 92% 18%, rgba(196, 165, 116, 0.05), transparent 50%),
-    radial-gradient(ellipse 60% 50% at 80% 85%, rgba(91, 140, 255, 0.07), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 10% 70%, rgba(20, 28, 48, 0.55), transparent 60%),
-    linear-gradient(180deg, #0e0f14 0%, #0b0c10 40%, #090a0e 70%, #08090c 100%);
+  background: #000000;
 }
 
 body::after {

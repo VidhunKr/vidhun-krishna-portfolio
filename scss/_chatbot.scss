@@ -26,9 +26,8 @@
   color: #e8eef8;
   overflow: visible;
   background:
-    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.1), transparent 45%),
-    radial-gradient(circle at 70% 80%, rgba(91, 140, 255, 0.12), transparent 50%),
-    linear-gradient(160deg, #171a22 0%, #0e1016 55%, #0a0b10 100%);
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.08), transparent 45%),
+    linear-gradient(160deg, #171717 0%, #0d0d0d 55%, #000000 100%);
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.45),
     0 0 0 4px rgba(196, 165, 116, 0.06),
@@ -67,8 +66,7 @@
   color: #f0e6d4;
   background:
     radial-gradient(circle at 30% 25%, rgba(196, 165, 116, 0.22), transparent 48%),
-    radial-gradient(circle at 70% 78%, rgba(91, 140, 255, 0.14), transparent 52%),
-    linear-gradient(155deg, #1c2030 0%, #12151e 48%, #0c0e14 100%);
+    linear-gradient(155deg, #1c1c1c 0%, #121212 48%, #000000 100%);
   border: 1px solid rgba(196, 165, 116, 0.42);
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.4),
@@ -119,13 +117,10 @@
   border-radius: 22px;
   border: 1px solid rgba(170, 190, 255, 0.14);
   background:
-    radial-gradient(ellipse 90% 55% at 0% -5%, rgba(91, 140, 255, 0.2), transparent 58%),
-    radial-gradient(ellipse 70% 45% at 100% 0%, rgba(196, 165, 116, 0.1), transparent 52%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(91, 140, 255, 0.08), transparent 55%),
-    linear-gradient(165deg, #1a1e2a 0%, #131620 38%, #0e1018 72%, #0b0c12 100%);
+    radial-gradient(ellipse 70% 45% at 100% 0%, rgba(196, 165, 116, 0.08), transparent 52%),
+    linear-gradient(165deg, #161616 0%, #0f0f0f 38%, #080808 72%, #000000 100%);
   box-shadow:
     0 28px 70px rgba(0, 0, 0, 0.55),
-    0 0 40px rgba(55, 90, 155, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
   opacity: 0;
   visibility: hidden;
@@ -165,8 +160,8 @@
   overflow: hidden;
   border: 1px solid rgba(196, 165, 116, 0.28);
   background:
-    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.1), transparent 45%),
-    linear-gradient(160deg, #171a22 0%, #0e1016 100%);
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.08), transparent 45%),
+    linear-gradient(160deg, #171717 0%, #0d0d0d 100%);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
 
   img,

@@ -1,10 +1,9 @@
-// Color system — deep midnight navy (footer-driven)
-// Footer reference: #0e0f14, #0b0c10, #080809 + blue/champagne glows
-$bg-primary: #0b0c10;
-$bg-secondary: #0e0f14;
-$bg-elevated: #14161e;
-$bg-hover: #1a1d28;
-$bg-deep: #08090c;
+// Color system — pure black canvas (no blue-tinted page backgrounds)
+$bg-primary: #000000;
+$bg-secondary: #000000;
+$bg-elevated: #111111;
+$bg-hover: #1a1a1a;
+$bg-deep: #000000;
 
 $text-primary: #f5f3ef;
 $text-secondary: #a5a5a5;

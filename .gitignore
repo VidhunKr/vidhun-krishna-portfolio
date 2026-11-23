@@ -1,8 +1,7 @@
 node_modules/
 .DS_Store
 *.log
-.css.map
+*.css.map
 .env
 .env.*
-!.env.example
 .vercel

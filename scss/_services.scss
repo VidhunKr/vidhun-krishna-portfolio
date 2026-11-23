@@ -5,10 +5,7 @@
   padding-bottom: clamp(3rem, 5.5vw, 4.5rem);
   perspective: 1200px;
   min-height: 0;
-  background:
-    radial-gradient(ellipse 55% 45% at 88% 15%, rgba(91, 140, 255, 0.08), transparent 55%),
-    radial-gradient(ellipse 40% 35% at 10% 85%, rgba(196, 165, 116, 0.04), transparent 50%),
-    linear-gradient(180deg, transparent 0%, rgba(14, 15, 20, 0.35) 50%, transparent 100%);
+  background: transparent;
 
   &__header {
     margin-bottom: 1.35rem;

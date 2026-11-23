@@ -212,7 +212,7 @@
   // Soft fade into the footer so the join never reads as a hard cut
   padding-bottom: clamp(3rem, 5vw, 4.5rem);
   min-height: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(14, 15, 20, 0.55) 75%, #{$bg-secondary} 100%);
+  background: transparent;
 
   &__panel {
     display: grid;

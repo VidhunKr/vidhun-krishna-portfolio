@@ -6,9 +6,7 @@
   z-index: 9999;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 35%, rgba(20, 28, 48, 0.9), transparent 65%),
-    linear-gradient(180deg, #0e1018 0%, #08090c 55%, #050608 100%);
+  background: #000000;
   overflow: hidden;
   // No CSS opacity/transform transition — GSAP owns the exit to avoid double-fades / blinks
 
@@ -30,8 +28,8 @@
     inset: 0;
     opacity: 0.28;
     background-image:
-      linear-gradient(rgba(160, 185, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(160, 185, 255, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 64px 64px;
     mask-image: radial-gradient(ellipse 70% 55% at 50% 45%, #000 10%, transparent 75%);
   }
@@ -49,7 +47,7 @@
       top: 42%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.72);
-      background: radial-gradient(circle, rgba(91, 140, 255, 0.28), transparent 68%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 68%);
     }
 
     &--b {
@@ -58,7 +56,7 @@
       top: 58%;
       left: 62%;
       transform: translate(-50%, -50%) scale(0.7);
-      background: radial-gradient(circle, rgba(196, 165, 116, 0.14), transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 70%);
     }
   }
 

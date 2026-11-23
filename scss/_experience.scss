@@ -3,9 +3,7 @@
 .experience {
   padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
   min-height: 0;
-  background:
-    radial-gradient(ellipse 50% 40% at 90% 20%, rgba(91, 140, 255, 0.06), transparent 55%),
-    linear-gradient(180deg, transparent 0%, rgba(14, 15, 20, 0.3) 50%, transparent 100%);
+  background: transparent;
 
   &__header {
     margin-bottom: 1.5rem;
@@ -103,7 +101,7 @@
     border: 1px dashed $border-strong;
     border-radius: $radius-lg;
     padding: 2rem;
-    background: rgba(20, 24, 40, 0.45);
+    background: rgba(17, 17, 17, 0.7);
 
     p {
       color: $text-secondary;

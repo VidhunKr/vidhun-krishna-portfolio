@@ -7,9 +7,7 @@
   padding-top: calc(#{$header-h} + 2rem);
   padding-bottom: 3.5rem;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 70% 55% at 85% 20%, rgba(91, 140, 255, 0.1), transparent 55%),
-    radial-gradient(ellipse 45% 40% at 10% 80%, rgba(196, 165, 116, 0.05), transparent 50%);
+  background: transparent;
 
   &__inner {
     position: relative;
@@ -152,13 +150,11 @@
       background:
         linear-gradient(
           180deg,
-          rgba(8, 9, 14, 0.2) 0%,
-          rgba(11, 12, 16, 0.08) 35%,
-          rgba(8, 9, 14, 0.38) 72%,
-          rgba(5, 6, 10, 0.62) 100%
-        ),
-        radial-gradient(ellipse 80% 60% at 50% 20%, rgba(91, 140, 255, 0.06), transparent 65%),
-        rgba(8, 10, 18, 0.14);
+          rgba(0, 0, 0, 0.18) 0%,
+          rgba(0, 0, 0, 0.06) 35%,
+          rgba(0, 0, 0, 0.36) 72%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
       mix-blend-mode: multiply;
     }
   }

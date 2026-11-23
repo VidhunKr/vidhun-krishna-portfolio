@@ -8,16 +8,7 @@
   overflow: clip;
   min-height: 0;
   border-top: none;
-  // Seamless blend from page navy → deep footer (same palette, no redesign)
-  background:
-    linear-gradient(
-      180deg,
-      #{$bg-secondary} 0%,
-      #{$bg-secondary} 8%,
-      #0c0d12 28%,
-      #{$bg-primary} 55%,
-      #{$bg-deep} 100%
-    );
+  background: #000000;
 
   &::before {
     content: "";
@@ -28,12 +19,7 @@
     height: min(28vh, 220px);
     pointer-events: none;
     z-index: 0;
-    background: linear-gradient(
-      180deg,
-      #{$bg-secondary} 0%,
-      rgba(14, 15, 20, 0.85) 35%,
-      rgba(14, 15, 20, 0) 100%
-    );
+    background: transparent;
   }
 
   &__atmosphere {
@@ -49,20 +35,9 @@
     border-radius: 50%;
     filter: blur(8px);
 
-    &--a {
-      width: min(52vw, 520px);
-      height: min(52vw, 520px);
-      top: 18%;
-      left: -8%;
-      background: radial-gradient(circle, rgba(91, 140, 255, 0.16), transparent 68%);
-    }
-
+    &--a,
     &--b {
-      width: min(58vw, 580px);
-      height: min(58vw, 580px);
-      top: 8%;
-      right: -12%;
-      background: radial-gradient(circle, rgba(91, 140, 255, 0.2), transparent 68%);
+      display: none;
     }
   }
 
@@ -598,11 +573,7 @@
     align-items: stretch;
     gap: 1rem;
     padding: 1.15rem 0 1.25rem;
-    background: linear-gradient(
-      180deg,
-      rgba(11, 12, 16, 0.92) 0%,
-      rgba(8, 9, 12, 0.96) 100%
-    );
+    background: #000000;
   }
 
   .site-footer__nav {
