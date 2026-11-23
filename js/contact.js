@@ -21,20 +21,34 @@
     message: form.querySelector("#message"),
   };
 
+  const LIMITS = {
+    nameMin: 2,
+    nameMax: 60,
+    messageMin: 10,
+    messageMax: 1000,
+  };
+
   let submitting = false;
   let autoCloseTimer = null;
   let previouslyFocused = null;
+  let attemptedSubmit = false;
 
   function setStatus(text) {
     if (status) status.textContent = text || "";
   }
 
+  function clearFieldError(input) {
+    if (!input) return;
+    const wrap = input.closest(".contact__field");
+    if (!wrap) return;
+    wrap.classList.remove("has-error");
+    input.removeAttribute("aria-invalid");
+    const err = wrap.querySelector(".contact__error");
+    if (err) err.textContent = "";
+  }
+
   function clearFieldErrors() {
-    form.querySelectorAll(".contact__field").forEach((field) => {
-      field.classList.remove("has-error");
-      const err = field.querySelector(".contact__error");
-      if (err) err.textContent = "";
-    });
+    Object.values(fields).forEach((input) => clearFieldError(input));
   }
 
   function setFieldError(input, message) {
@@ -42,52 +56,110 @@
     const wrap = input.closest(".contact__field");
     if (!wrap) return;
     wrap.classList.add("has-error");
+    input.setAttribute("aria-invalid", "true");
     let err = wrap.querySelector(".contact__error");
     if (!err) {
       err = document.createElement("p");
       err.className = "contact__error";
+      err.setAttribute("aria-live", "polite");
       wrap.appendChild(err);
     }
     err.textContent = message;
   }
 
-  function isValidEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  }
-
   function getValues() {
     return {
-      name: String(fields.name?.value || "").trim(),
-      email: String(fields.email?.value || "").trim(),
+      name: String(fields.name?.value || "").trim().replace(/\s+/g, " "),
+      email: String(fields.email?.value || "").trim().toLowerCase(),
       message: String(fields.message?.value || "").trim(),
       honey: String(form.querySelector('[name="_honey"]')?.value || ""),
     };
   }
 
-  function validate(values) {
-    clearFieldErrors();
-    let ok = true;
+  function validateName(name) {
+    if (!name) return "Please enter your full name.";
+    if (name.length < LIMITS.nameMin) return `Name must be at least ${LIMITS.nameMin} characters.`;
+    if (name.length > LIMITS.nameMax) return `Name must be under ${LIMITS.nameMax} characters.`;
+    if (!/^[A-Za-z][A-Za-z .'-]*$/.test(name)) {
+      return "Use letters only (spaces, hyphens, and apostrophes allowed).";
+    }
+    if (!/[A-Za-z]{2,}/.test(name.replace(/[^A-Za-z]/g, ""))) {
+      return "Please enter a valid name.";
+    }
+    return "";
+  }
 
-    if (!values.name) {
-      setFieldError(fields.name, "Please enter your name.");
-      ok = false;
+  function validateEmail(email) {
+    if (!email) return "Please enter your email address.";
+    // Practical email check: local@domain.tld
+    if (
+      !/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/.test(
+        email
+      )
+    ) {
+      return "Please enter a valid email address.";
     }
-    if (!values.email) {
-      setFieldError(fields.email, "Please enter your email.");
-      ok = false;
-    } else if (!isValidEmail(values.email)) {
-      setFieldError(fields.email, "Please enter a valid email address.");
-      ok = false;
+    if (email.length > 120) return "Email is too long.";
+    return "";
+  }
+
+  function validateMessage(message) {
+    if (!message) return "Please enter your message.";
+    if (message.length < LIMITS.messageMin) {
+      return `Message should be at least ${LIMITS.messageMin} characters.`;
     }
-    if (!values.message) {
-      setFieldError(fields.message, "Please enter your message.");
-      ok = false;
-    } else if (values.message.length < 10) {
-      setFieldError(fields.message, "Message should be at least 10 characters.");
-      ok = false;
+    if (message.length > LIMITS.messageMax) {
+      return `Message must be under ${LIMITS.messageMax} characters.`;
+    }
+    return "";
+  }
+
+  function fieldErrorFor(key, values) {
+    if (key === "name") return validateName(values.name);
+    if (key === "email") return validateEmail(values.email);
+    if (key === "message") return validateMessage(values.message);
+    return "";
+  }
+
+  function validate(values, { focusFirst = false } = {}) {
+    let ok = true;
+    let firstInvalid = null;
+
+    ["name", "email", "message"].forEach((key) => {
+      const input = fields[key];
+      const message = fieldErrorFor(key, values);
+      if (message) {
+        setFieldError(input, message);
+        ok = false;
+        if (!firstInvalid) firstInvalid = input;
+      } else {
+        clearFieldError(input);
+      }
+    });
+
+    if (!ok && focusFirst && firstInvalid) {
+      // preventScroll: Lenis owns page scroll — native jump feels stuck/janky
+      firstInvalid.focus({ preventScroll: true });
+      const lenis = window.__lenis;
+      if (lenis && typeof lenis.scrollTo === "function") {
+        lenis.scrollTo(firstInvalid, {
+          offset: -120,
+          duration: 0.85,
+          easing: (t) => 1 - Math.pow(1 - t, 4),
+        });
+      } else {
+        firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }
 
     return ok;
+  }
+
+  function dismissValidationFeedback() {
+    if (typeof window.clearSnackbars === "function") {
+      window.clearSnackbars();
+    }
+    setStatus("");
   }
 
   function setLoading(isLoading) {
@@ -149,7 +221,6 @@
     }
 
     dialog.removeAttribute("hidden");
-    // Force reflow so enter animation runs
     void dialog.offsetWidth;
     dialog.classList.add("is-visible");
     document.body.classList.add("form-dialog-open");
@@ -174,14 +245,39 @@
     body.append("formType", "ContactForm");
     body.append("Submitted At", new Date().toISOString());
 
-    // Apps Script web apps block readable CORS responses.
-    // FormData + no-cors is the same AVS pattern; completed request = sent.
     await fetch(SCRIPT_URL, {
       method: "POST",
       body,
       mode: "no-cors",
     });
   }
+
+  Object.entries(fields).forEach(([key, input]) => {
+    if (!input) return;
+
+    input.addEventListener("input", () => {
+      // Auto-close this field's validation as soon as the user types
+      clearFieldError(input);
+      dismissValidationFeedback();
+    });
+
+    input.addEventListener("blur", () => {
+      const raw = String(input.value || "").trim();
+      // Don't nag empty fields until the user has tried to submit
+      if (!attemptedSubmit && !raw) {
+        clearFieldError(input);
+        return;
+      }
+      const message = fieldErrorFor(key, getValues());
+      if (message) setFieldError(input, message);
+      else clearFieldError(input);
+    });
+  });
+
+  // Hard length caps while typing
+  if (fields.name) fields.name.setAttribute("maxlength", String(LIMITS.nameMax));
+  if (fields.email) fields.email.setAttribute("maxlength", "120");
+  if (fields.message) fields.message.setAttribute("maxlength", String(LIMITS.messageMax));
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -191,10 +287,12 @@
     const values = getValues();
     if (values.honey) return;
 
-    if (!validate(values)) {
+    attemptedSubmit = true;
+
+    if (!validate(values, { focusFirst: true })) {
       setStatus("");
       if (typeof window.showSnackbar === "function") {
-        window.showSnackbar("Please fill in all required fields.", "info");
+        window.showSnackbar("Please fix the highlighted fields.", "info", 2800);
       }
       return;
     }
@@ -202,10 +300,12 @@
     submitting = true;
     setLoading(true);
     setStatus("Sending your message...");
+    dismissValidationFeedback();
 
     try {
       await sendMessage(values);
       form.reset();
+      attemptedSubmit = false;
       clearFieldErrors();
       setStatus("");
       openDialog("success");
@@ -231,7 +331,6 @@
     closeDialog();
     if (isError) {
       form.requestSubmit();
-      return;
     }
   });
 

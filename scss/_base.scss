@@ -319,7 +319,10 @@ section {
   contain-intrinsic-size: auto 720px;
 }
 
-.hero {
+.hero,
+.contact {
+  // Keep hero + contact always painted — contact is filter-heavy; skipping it
+  // with content-visibility caused a hard hitch when Lenis reached the form.
   content-visibility: visible;
 }
 

@@ -20,8 +20,18 @@
     return host;
   }
 
+  window.clearSnackbars = function clearSnackbars() {
+    const host = document.querySelector(".snackbar-host");
+    if (!host) return;
+    host.querySelectorAll(".snackbar").forEach((el) => {
+      el.classList.add("is-leaving");
+      window.setTimeout(() => el.remove(), 280);
+    });
+  };
+
   window.showSnackbar = function showSnackbar(message, type = "info", duration = 3500) {
     const host = ensureHost();
+    window.clearSnackbars();
     const el = document.createElement("div");
     const safeType = ["success", "error", "info"].includes(type) ? type : "info";
     el.className = `snackbar snackbar--${safeType}`;

@@ -8,11 +8,10 @@
     if (typeof gsap !== "undefined") {
       const rises = panel.querySelectorAll("[data-contact-rise]");
       gsap.killTweensOf([panel, ...rises]);
-      gsap.set(panel, { autoAlpha: 1, y: 0, clearProps: "" });
-      if (rises.length) gsap.set(rises, { autoAlpha: 1, y: 0 });
+      gsap.set(panel, { autoAlpha: 1, y: 0, force3D: true });
+      if (rises.length) gsap.set(rises, { autoAlpha: 1, y: 0, force3D: true });
     } else {
       panel.style.opacity = "1";
-      panel.style.transform = "none";
     }
   }
 
@@ -33,6 +32,20 @@
 
     window.__lenis = lenis;
 
+    // Keep page scroll soft over the form — native focus scroll fights Lenis
+    document.querySelectorAll(".contact__form input, .contact__form textarea").forEach((field) => {
+      field.addEventListener(
+        "focus",
+        () => {
+          // Measure after keyboard/caret settles; keeps Lenis height in sync
+          requestAnimationFrame(() => {
+            if (typeof lenis.resize === "function") lenis.resize();
+          });
+        },
+        { passive: true }
+      );
+    });
+
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener("click", (e) => {
         // Back-to-top is handled separately for a true top scroll
@@ -47,7 +60,9 @@
         const offset = header ? -(header.offsetHeight + 8) : -88;
         lenis.scrollTo(target, {
           offset,
-          duration: id === "#contact" ? 0.85 : 1.15,
+          // Same soft coast as every other section (contact used to snap shorter)
+          duration: 1.15,
+          easing: (t) => 1 - Math.pow(1 - t, 4),
         });
       });
     });
@@ -114,12 +129,13 @@
       },
     });
 
-    // Contact panel: light rise — keep form readable quickly
+    // Contact panel: opacity-only fade — no Y transform (backdrop-filter +
+    // translate during Lenis scroll was hitching the wheel coast)
     const contactPanel = document.querySelector("[data-contact-panel]");
     if (contactPanel && !contactPanel.classList.contains("is-in")) {
       const rises = contactPanel.querySelectorAll("[data-contact-rise]");
-      gsap.set(contactPanel, { autoAlpha: 0.45, y: 18 });
-      if (rises.length) gsap.set(rises, { autoAlpha: 0.55, y: 12 });
+      gsap.set(contactPanel, { autoAlpha: 0.55, y: 0, force3D: true });
+      if (rises.length) gsap.set(rises, { autoAlpha: 0.7, y: 0, force3D: true });
 
       const contactTl = gsap.timeline({
         scrollTrigger: {
@@ -132,8 +148,7 @@
 
       contactTl.to(contactPanel, {
         autoAlpha: 1,
-        y: 0,
-        duration: 0.4,
+        duration: 0.45,
         onStart() {
           contactPanel.classList.add("is-in");
         },
@@ -144,11 +159,10 @@
           rises,
           {
             autoAlpha: 1,
-            y: 0,
             duration: 0.35,
             stagger: 0.04,
           },
-          "-=0.28"
+          "-=0.3"
         );
       }
     }
