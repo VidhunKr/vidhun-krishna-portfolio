@@ -1,6 +1,6 @@
 /**
- * Portfolio chat answers — no API key, no server.
- * Edit this file to update what the assistant says.
+ * Portfolio chat answers — friendly first-person voice (as Vidhun).
+ * Edit this file to update what the chat says.
  */
 window.PORTFOLIO_CHAT = {
   reply(question) {
@@ -13,40 +13,40 @@ window.PORTFOLIO_CHAT = {
     const has = (words) => words.some((w) => q.includes(w));
 
     if (!q || /^(hi|hello|hey|hai|hii|yo)\b/.test(q) || q.length <= 3) {
-      return "Hello! I'm Vidhun's portfolio assistant. I can tell you about his Angular/TypeScript skills, projects like Aviator and RedTeam CRM, experience, or how to contact him for hiring. What would you like to know?";
+      return "Hey! Nice to meet you. I’m Vidhun — ask me about my Angular/TypeScript work, projects like Aviator and RedTeam CRM, my experience, or how we can get in touch. What would you like to know?";
     }
 
     if (has(["hire", "hiring", "available", "job", "recruit", "opportunity"])) {
       return [
-        "Vidhun is available for new work and hiring opportunities.",
+        "Yes — I’m open to new work and hiring conversations!",
         "",
-        "Email: vidhunkrishna007@gmail.com",
-        "Location: Kerala, India",
+        "Email me at vidhunkrishna007@gmail.com",
+        "I’m based in Kerala, India",
         "",
-        "Or use the Contact section on this portfolio.",
+        "Or just use the Contact section on this site — I’d love to hear from you.",
       ].join("\n");
     }
 
     if (has(["contact", "email", "phone", "reach", "linkedin", "github", "call"])) {
       return [
-        "You can reach Vidhun here:",
+        "Sure — here’s how you can reach me:",
         "",
         "Email: vidhunkrishna007@gmail.com",
         "Phone: +91 7012305384",
         "LinkedIn: linkedin.com/in/vidhun-krishna-m",
         "GitHub: github.com/VidhunKr",
         "",
-        "Or use the Contact form on this site.",
+        "Or drop a message through the Contact form here.",
       ].join("\n");
     }
 
     if (has(["where", "location", "based", "kerala", "kochi", "from"])) {
-      return "Vidhun is based in Kerala, India (Kochi area).";
+      return "I’m from Kerala, India — based around the Kochi area.";
     }
 
     if (has(["educat", "degree", "college", "study", "bsc", "b.sc", "diploma"])) {
       return [
-        "Education:",
+        "Here’s my education:",
         "",
         "• B.Sc. Computer Science",
         "  Universal College Mannarkkad (2020–2023)",
@@ -54,13 +54,13 @@ window.PORTFOLIO_CHAT = {
         "• Diploma in MEAN Stack Development",
         "  Unique Ocassio Tech, Kochi (2023–2024)",
         "",
-        "Languages: English, Malayalam, Tamil",
+        "I speak English, Malayalam, and Tamil.",
       ].join("\n");
     }
 
     if (has(["experience", "work", "company", "career", "saihasoft", "tinos"])) {
       return [
-        "About 1.7 years of experience:",
+        "I’ve got about 1.7 years of experience so far:",
         "",
         "• Frontend Developer (Angular)",
         "  Saihasoft Technologies, Kochi",
@@ -74,22 +74,22 @@ window.PORTFOLIO_CHAT = {
 
     if (has(["angular"])) {
       return [
-        "Vidhun is an Angular-focused frontend developer.",
+        "Angular is my main focus — I build frontend apps with it every day.",
         "",
         "• TypeScript, RxJS, reactive forms",
         "• Routing, guards, interceptors",
         "• Angular Material",
         "",
-        "Projects: Aviator, RedTeam CRM, Samedha, TranzCars",
+        "You’ll see that stack in projects like Aviator, RedTeam CRM, Samedha, and TranzCars.",
       ].join("\n");
     }
 
     if (has(["ionic", "mobile", "android", "ios", "cordova"])) {
       return [
-        "Yes — Vidhun builds Ionic + Angular mobile apps",
-        "(also Cordova) for web, Android, and iOS.",
+        "Yep — I build Ionic + Angular mobile apps",
+        "(and Cordova too) for web, Android, and iOS.",
         "",
-        "Examples:",
+        "A couple of examples:",
         "• Aviator (Ionic 8 / Angular 20)",
         "• ClikPay",
       ].join("\n");
@@ -97,7 +97,7 @@ window.PORTFOLIO_CHAT = {
 
     if (has(["backend", "node", "express", "mongo", "jwt", "fullstack", "full-stack", "full stack"])) {
       return [
-        "Backend experience:",
+        "I also work on the backend side when needed:",
         "",
         "• Node.js",
         "• Express.js",
@@ -105,13 +105,13 @@ window.PORTFOLIO_CHAT = {
         "• JWT authentication",
         "• MongoDB",
         "",
-        "Example: CoVecart (React / Node / Express / MongoDB)",
+        "One example is CoVecart (React / Node / Express / MongoDB).",
       ].join("\n");
     }
 
     if (has(["typescript", "javascript", "rxjs", "scss", "html", "css", "bootstrap", "material"])) {
       return [
-        "Core stack:",
+        "My day-to-day stack looks like this:",
         "",
         "• Angular, TypeScript, JavaScript",
         "• HTML5, CSS3 / SCSS, Bootstrap",
@@ -122,7 +122,7 @@ window.PORTFOLIO_CHAT = {
 
     if (has(["skill", "tech", "stack", "technologies", "tools"])) {
       return [
-        "Main skills:",
+        "Here’s what I work with most:",
         "",
         "• Angular, TypeScript, JavaScript, RxJS",
         "• Ionic, HTML / CSS / SCSS",
@@ -133,25 +133,25 @@ window.PORTFOLIO_CHAT = {
     }
 
     if (has(["aviator"])) {
-      return "Aviator is a pilot exam preparation platform with dashboards, study modules, tests, live classes, OTP auth, subscriptions, quizzes, and analytics. Tech: Ionic 8, Angular 20, Cordova, REST APIs.";
+      return "Aviator is a pilot exam prep platform I worked on — dashboards, study modules, tests, live classes, OTP auth, subscriptions, quizzes, and analytics. Built with Ionic 8, Angular 20, Cordova, and REST APIs.";
     }
 
     if (has(["redteam", "crm"])) {
-      return "RedTeam CRM is a lead management system with multi-branch capture, follow-up, role-based access, dashboards, and REST APIs. Tech: Angular, Angular Material, Firebase, Chart.js.";
+      return "RedTeam CRM is a lead management system I built — multi-branch capture, follow-ups, role-based access, dashboards, and REST APIs. Stack: Angular, Angular Material, Firebase, Chart.js.";
     }
 
     if (has(["samedha"])) {
-      return "Samedha Ayurvedics is an e-commerce and booking platform with treatments, products, appointments, cart, OTP auth, and RxJS services. Tech: Angular 20, SSR, REST APIs.";
+      return "Samedha Ayurvedics is an e-commerce and booking platform I worked on — treatments, products, appointments, cart, OTP auth, and RxJS services. Tech: Angular 20, SSR, REST APIs.";
     }
 
     if (has(["tranz", "tranzcars"])) {
-      return "TranzCars is a self-drive car rental platform with vehicle search, booking, payments, and Google Maps. Tech: Angular 22, Bootstrap, Razorpay, REST APIs.";
+      return "TranzCars is a self-drive car rental platform I built — vehicle search, booking, payments, and Google Maps. Tech: Angular 22, Bootstrap, Razorpay, REST APIs.";
     }
 
     if (has(["project", "portfolio", "built", "covecart", "clikpay"])) {
-      return "Key projects: Aviator, RedTeam CRM, Samedha Ayurvedics, TranzCars, CoVecart, ClikPay, Executive Analytics, and Contacts Pipeline. Ask about a specific name for more detail.";
+      return "Some of my key projects: Aviator, RedTeam CRM, Samedha Ayurvedics, TranzCars, CoVecart, ClikPay, Executive Analytics, and Contacts Pipeline. Ask about any one and I’ll share more!";
     }
 
-    return "Vidhun Krishna is a Frontend / Angular Developer from Kerala, India (~1.7 years experience). Ask about skills, projects, experience, or how to contact him — or use the Contact section for hiring.";
+    return "I’m Vidhun Krishna — a Frontend / Angular Developer from Kerala, India, with about 1.7 years of experience. Ask me about my skills, projects, experience, or how to get in touch. Happy to chat!";
   },
 };

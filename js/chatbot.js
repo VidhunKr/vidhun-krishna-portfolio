@@ -181,7 +181,7 @@
 
   function getReply(question) {
     return window.PORTFOLIO_CHAT?.reply?.(question) ||
-      "Ask about Vidhun's skills, projects, experience, or contact details.";
+      "Hey! Ask me about my skills, projects, experience, or how to get in touch.";
   }
 
   function pickSuggestions(exclude) {
@@ -211,7 +211,7 @@
     messagesEl.innerHTML = "";
     addBubble(
       "assistant",
-      "Hi! I'm Vidhun's portfolio assistant. I can help you learn about his skills, projects, experience and background. What would you like to know?"
+      "Hey! I’m Vidhun. Ask me about my skills, projects, experience, or how we can connect — happy to chat."
     );
     renderSuggestions();
   }
