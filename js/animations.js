@@ -25,11 +25,9 @@
       duration: coarsePointer ? 1.15 : 1.65,
       easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
-      // Soft touch smoothing on phones so scroll stays fluid over the carousel
-      syncTouch: coarsePointer,
-      syncTouchLerp: coarsePointer ? 0.075 : 0.1,
-      touchInertiaMultiplier: coarsePointer ? 28 : 35,
-      touchMultiplier: coarsePointer ? 1.4 : 1.55,
+      // Native touch on phones — syncTouch was trapping scroll mid-page on iOS/Android
+      syncTouch: false,
+      touchMultiplier: coarsePointer ? 1.35 : 1.55,
       wheelMultiplier: 0.68,
       infinite: false,
     });
@@ -88,22 +86,40 @@
         if (typeof lenis.resize === "function") lenis.resize();
 
         const offset = navOffsetPx();
-        // Re-measure after menu close — absolute Y avoids Lenis element-target quirks on mobile
         const current = typeof lenis.scroll === "number" ? lenis.scroll : window.scrollY || 0;
         let y = Math.max(0, current + target.getBoundingClientRect().top - offset);
         if (typeof lenis.limit === "number" && lenis.limit > 0) {
           y = Math.min(y, lenis.limit);
         }
 
-        lenis.scrollTo(y, {
-          duration: reducedMotion ? 0 : 1.05,
-          easing: (t) => 1 - Math.pow(1 - t, 4),
-          immediate: !!reducedMotion,
-        });
+        const go = (pos, duration) => {
+          lenis.scrollTo(pos, {
+            duration,
+            easing: (t) => 1 - Math.pow(1 - t, 4),
+            immediate: !!reducedMotion || duration === 0,
+            onComplete: () => {
+              // Second pass: layout may expand as sections paint — correct landing
+              if (typeof lenis.resize === "function") lenis.resize();
+              const cur = typeof lenis.scroll === "number" ? lenis.scroll : window.scrollY || 0;
+              let corrected = Math.max(0, cur + target.getBoundingClientRect().top - offset);
+              if (typeof lenis.limit === "number" && lenis.limit > 0) {
+                corrected = Math.min(corrected, lenis.limit);
+              }
+              if (Math.abs(corrected - cur) > 24) {
+                lenis.scrollTo(corrected, {
+                  duration: reducedMotion ? 0 : 0.45,
+                  easing: (t) => 1 - Math.pow(1 - t, 3),
+                  immediate: !!reducedMotion,
+                });
+              }
+            },
+          });
+        };
+
+        go(y, reducedMotion ? 0 : 1.05);
       };
 
       // Mobile menu close restores overflow; measure only after layout settles
-      // (nav click handler closes the menu first — always defer when from mobile)
       const delay = fromMobile ? 120 : 0;
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {

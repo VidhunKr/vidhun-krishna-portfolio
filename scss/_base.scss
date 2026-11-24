@@ -331,15 +331,27 @@ section {
   position: relative;
   padding: clamp(3.25rem, 6.5vw, 5rem) 0;
   scroll-margin-top: $header-h;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 720px;
 }
 
-.hero,
-.contact {
-  // Keep hero + contact always painted — contact is filter-heavy; skipping it
-  // with content-visibility caused a hard hitch when Lenis reached the form.
-  content-visibility: visible;
+// Desktop-only paint skipping. On mobile, content-visibility:auto with a 720px
+// intrinsic size made #projects (~5kpx) collapse — Contact nav measured too high
+// and Lenis landed mid-projects (e.g. CoVecart).
+@media (min-width: $bp-lg) and (pointer: fine) {
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1200px;
+  }
+
+  .projects {
+    contain-intrinsic-size: auto 4800px;
+  }
+
+  .hero,
+  .contact {
+    // Keep hero + contact always painted — contact is filter-heavy; skipping it
+    // with content-visibility caused a hard hitch when Lenis reached the form.
+    content-visibility: visible;
+  }
 }
 
 html.lenis,
