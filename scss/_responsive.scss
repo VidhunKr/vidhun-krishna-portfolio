@@ -251,10 +251,31 @@
   .services .swiper {
     padding-top: 1.25rem;
     padding-bottom: 1.5rem;
+    perspective: 900px;
+    // Cheaper paint on mobile — masks + deep 3D were hitching Lenis scroll
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .services .swiper-slide {
-    width: min(68vw, 240px);
+    width: min(78vw, 260px);
+  }
+
+  .services .swiper-slide[data-depth="3"],
+  .services .swiper-slide[data-depth="far"] {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  .services__carousel.is-touch .playing-card__shine {
+    display: none;
+  }
+
+  .services__carousel.is-touch .playing-card.is-active .playing-card__face {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 16px 32px rgba(0, 0, 0, 0.45),
+      0 0 22px rgba(91, 140, 255, 0.16);
   }
 
   .playing-card__content {

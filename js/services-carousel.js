@@ -83,11 +83,22 @@
   const bandStart = total * 2;
   const bandEnd = total * 3;
 
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+  const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+
   const coverflowBase = {
     rotate: 34,
     stretch: -36,
     depth: 220,
     modifier: 1.05,
+    slideShadows: false,
+  };
+
+  const coverflowMobile = {
+    rotate: 16,
+    stretch: -10,
+    depth: 100,
+    modifier: 1,
     slideShadows: false,
   };
 
@@ -132,39 +143,43 @@
     return ((sw.activeIndex % total) + total) % total;
   }
 
+  const slideSpeed = reducedMotion ? 0 : isMobile || isCoarse ? 420 : 600;
+
   const swiper = new Swiper(el, {
     effect: "coverflow",
-    grabCursor: true,
+    grabCursor: !isCoarse,
     centeredSlides: true,
     slidesPerView: "auto",
     loop: false,
-    speed: reducedMotion ? 0 : 600,
+    speed: slideSpeed,
     watchSlidesProgress: true,
-    spaceBetween: -24,
+    spaceBetween: isMobile ? -12 : -24,
     initialSlide: bandStart,
-    resistanceRatio: 0.85,
-    longSwipesRatio: 0.25,
-    threshold: 8,
+    resistanceRatio: 0.7,
+    longSwipesRatio: 0.2,
+    longSwipesMs: 240,
+    threshold: isCoarse ? 14 : 8,
     followFinger: true,
+    // Critical for Lenis / native vertical scroll on mobile — don't trap the page
+    touchStartPreventDefault: false,
+    touchMoveStopPropagation: false,
+    touchReleaseOnEdges: true,
+    touchAngle: 28,
+    passiveListeners: true,
     a11y: { enabled: false },
     keyboard: { enabled: false },
-    // Custom arrows — avoid Swiper stopping at real deck ends
     navigation: false,
     autoplay: false,
-    coverflowEffect: { ...coverflowBase },
+    coverflowEffect: isMobile ? { ...coverflowMobile } : { ...coverflowBase },
     breakpoints: {
       0: {
-        spaceBetween: -14,
-        coverflowEffect: {
-          rotate: 22,
-          stretch: -16,
-          depth: 160,
-          modifier: 1,
-          slideShadows: false,
-        },
+        spaceBetween: -10,
+        speed: reducedMotion ? 0 : 400,
+        coverflowEffect: { ...coverflowMobile },
       },
-      640: {
+      768: {
         spaceBetween: -20,
+        speed: reducedMotion ? 0 : 520,
         coverflowEffect: {
           rotate: 28,
           stretch: -26,
@@ -175,12 +190,14 @@
       },
       1024: {
         spaceBetween: -26,
+        speed: reducedMotion ? 0 : 600,
         coverflowEffect: { ...coverflowBase },
       },
     },
     on: {
       init(sw) {
         root.classList.add("is-ready");
+        if (isMobile || isCoarse) root.classList.add("is-touch");
         buildBullets();
         neutralizeFocus(sw);
         keepInBand(sw);
@@ -197,10 +214,7 @@
         syncBullets(sw);
       },
       slideChangeTransitionEnd(sw) {
-        // After 07→01 (next copy), silently re-center in middle deck — no rewind animation
-        if (keepInBand(sw)) {
-          lastActive = -1;
-        }
+        if (keepInBand(sw)) lastActive = -1;
         markActive(sw);
         syncBullets(sw);
       },
@@ -221,15 +235,13 @@
 
   function go(dir) {
     if (wrapping) return;
-    // Snap into the safe middle deck first (instant, no visible rewind)
     keepInBand(swiper);
-    // Always move exactly one slide — allow click during motion (no stuck delay)
     const target = swiper.activeIndex + dir;
     if (target < 0 || target >= swiper.slides.length) {
       keepInBand(swiper);
       return;
     }
-    swiper.slideTo(target, reducedMotion ? 0 : 600);
+    swiper.slideTo(target, slideSpeed);
   }
 
   const prev = root.querySelector("[data-services-prev]");

@@ -20,12 +20,16 @@
   // Lenis smooth scroll — longer coast, softer wheel response
   let lenis;
   if (!reducedMotion && typeof Lenis !== "undefined") {
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     lenis = new Lenis({
-      duration: 1.65,
+      duration: coarsePointer ? 1.15 : 1.65,
       easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 1.55,
+      // Soft touch smoothing on phones so scroll stays fluid over the carousel
+      syncTouch: coarsePointer,
+      syncTouchLerp: coarsePointer ? 0.075 : 0.1,
+      touchInertiaMultiplier: coarsePointer ? 28 : 35,
+      touchMultiplier: coarsePointer ? 1.4 : 1.55,
       wheelMultiplier: 0.68,
       infinite: false,
     });

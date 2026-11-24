@@ -74,8 +74,7 @@ $font-card: "Cormorant Garamond", "Times New Roman", serif;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     transform-style: preserve-3d;
-    will-change: transform;
-    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 
     &:focus,
     &:focus-visible {
