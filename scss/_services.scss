@@ -5,7 +5,7 @@ $foil-bright: #d4e2ff;
 $foil-deep: #3a5f9a;
 $card-navy: #07090f;
 $card-navy-soft: #0c101a;
-$font-card: "Cormorant Garamond", "Times New Roman", serif;
+$font-card: $font-display;
 
 .services {
   padding-top: clamp(3rem, 5.5vw, 4.5rem);
@@ -24,11 +24,13 @@ $font-card: "Cormorant Garamond", "Times New Roman", serif;
     max-width: min(100%, 72rem);
     margin-inline: auto;
     overflow: hidden;
+    // Reserve height so late Swiper boot doesn't shift the page
+    min-height: clamp(26rem, 72vw, 34rem);
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(12px);
     transition:
-      opacity 0.55s $ease,
-      transform 0.55s $ease;
+      opacity 0.45s $ease,
+      transform 0.45s $ease;
 
     &.is-ready,
     &.reveal.is-visible {

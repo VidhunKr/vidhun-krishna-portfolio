@@ -12,8 +12,8 @@
   const statusEl = preloader.querySelector("[data-preloader-status]");
   const barGlow = preloader.querySelector(".preloader__bar-glow");
   const logoWrap = preloader.querySelector(".preloader__logo-wrap");
-  const SAFE_TIMEOUT = 3600;
-  const MIN_DISPLAY = reducedMotion ? 0 : 1200;
+  const SAFE_TIMEOUT = 2600;
+  const MIN_DISPLAY = reducedMotion ? 0 : 900;
 
   const STATUS = [
     [0, "Initializing"],
@@ -139,8 +139,8 @@
         const dy = to.top + to.height / 2 - (from.top + from.height / 2);
         const scale = Math.min(to.width / from.width, to.height / from.height);
 
-        const flyStart = 0.16;
-        const flyDuration = 0.95;
+        const flyStart = 0.1;
+        const flyDuration = 0.7;
         const landAt = flyStart + flyDuration;
 
         tl.to(
@@ -223,16 +223,16 @@
 
     setTimeout(() => {
       setProgress(100);
-      window.setTimeout(exitPreloader, reducedMotion ? 0 : 220);
-    }, wait + 80);
+      window.setTimeout(exitPreloader, reducedMotion ? 0 : 180);
+    }, wait);
   }
 
   function tickFakeProgress() {
     if (finished) return;
-    if (progress >= (assetsReady ? 96 : 84)) return;
-    const step = assetsReady ? 7 + Math.random() * 9 : 2.5 + Math.random() * 5.5;
+    if (progress >= (assetsReady ? 94 : 78)) return;
+    const step = assetsReady ? 6 + Math.random() * 8 : 2.8 + Math.random() * 4.5;
     setProgress(progress + step);
-    window.setTimeout(tickFakeProgress, assetsReady ? 60 : 110);
+    window.setTimeout(tickFakeProgress, assetsReady ? 55 : 95);
   }
 
   function markReady() {
@@ -248,13 +248,11 @@
     }, 36);
   }
 
-  // Warm critical above-the-fold images so the hero never pops in late
+  // Only warm above-the-fold assets — don't wait for the full window load
   function warmCriticalImages() {
     const urls = [
       "assets/images/portrait-hero.webp?v=3",
-      "assets/images/portrait-hero.jpg?v=3",
       "assets/images/logo/vk-logo-dark.svg",
-      "assets/images/project-aviators.webp",
     ];
     return Promise.all(
       urls.map(
@@ -262,23 +260,22 @@
           new Promise((resolve) => {
             const img = new Image();
             img.decoding = "async";
-            img.onload = img.onerror = () => resolve();
+            const done = () => resolve();
+            img.onload = done;
+            img.onerror = done;
+            // Cap wait per image so a slow network never stalls the preloader
+            window.setTimeout(done, 900);
             img.src = src;
           })
       )
     );
   }
 
-  setProgress(3);
+  setProgress(6);
   if (!reducedMotion) tickFakeProgress();
   else setProgress(100);
 
-  const assetsGate = Promise.all([
-    warmCriticalImages(),
-    document.readyState === "complete"
-      ? Promise.resolve()
-      : new Promise((resolve) => window.addEventListener("load", resolve, { once: true })),
-  ]).then(markReady);
+  const assetsGate = warmCriticalImages().then(markReady);
 
   window.setTimeout(() => {
     if (!finished) {
