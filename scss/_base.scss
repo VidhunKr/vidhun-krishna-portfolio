@@ -10,9 +10,10 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: $header-h;
+  scroll-padding-top: calc(#{$header-h} + 12px);
   font-size: 16px;
   background: #000000;
+  overflow-x: clip;
 }
 
 body {
@@ -22,6 +23,11 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+main section[id] {
+  scroll-margin-top: calc(#{$header-h} + 16px);
 }
 
 // Pure black page canvas
@@ -40,12 +46,21 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.28;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
   background-size: 80px 80px;
   mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 15%, transparent 75%);
+  // Keep grid on its own layer so scroll doesn't constantly repaint it
+  transform: translateZ(0);
+  contain: strict;
+}
+
+@media (max-width: ($bp-md - 1)), (pointer: coarse) {
+  body::after {
+    display: none;
+  }
 }
 
 img {

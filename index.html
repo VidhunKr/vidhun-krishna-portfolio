@@ -348,39 +348,40 @@
           </div>
         </nav>
       </div>
+    </header>
 
-      <div class="nav__mobile" id="mobile-nav" aria-hidden="true" data-nav-mobile>
-        <div class="nav__mobile-inner">
-          <p class="nav__mobile-label">Navigate</p>
-          <nav class="nav__mobile-links" aria-label="Mobile">
-            <a href="#home" data-nav-link>Home</a>
-            <a href="#about" data-nav-link>About</a>
-            <a href="#skills" data-nav-link>Skills</a>
-            <a href="#projects" data-nav-link>Projects</a>
-            <a href="#experience" data-nav-link>Experience</a>
-            <a href="#contact" data-nav-link>Contact</a>
-          </nav>
-          <div class="nav__mobile-footer">
-            <div class="nav__availability nav__availability--mobile" aria-label="Availability status">
-              <span class="nav__availability-dot" aria-hidden="true"></span>
-              <span class="nav__availability-text">Open to opportunities</span>
-            </div>
-            <a class="nav__cta nav__cta--mobile" href="#contact">
-              <span>Let's Talk</span>
-              <svg class="nav__cta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M5 12h14M13 6l6 6-6 6"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </a>
+    <!-- Outside header so overlay never inflates [data-nav] height / scroll offset -->
+    <div class="nav__mobile" id="mobile-nav" aria-hidden="true" data-nav-mobile>
+      <div class="nav__mobile-inner">
+        <p class="nav__mobile-label">Navigate</p>
+        <nav class="nav__mobile-links" aria-label="Mobile">
+          <a href="#home" data-nav-link>Home</a>
+          <a href="#about" data-nav-link>About</a>
+          <a href="#skills" data-nav-link>Skills</a>
+          <a href="#projects" data-nav-link>Projects</a>
+          <a href="#experience" data-nav-link>Experience</a>
+          <a href="#contact" data-nav-link>Contact</a>
+        </nav>
+        <div class="nav__mobile-footer">
+          <div class="nav__availability nav__availability--mobile" aria-label="Availability status">
+            <span class="nav__availability-dot" aria-hidden="true"></span>
+            <span class="nav__availability-text">Open to opportunities</span>
           </div>
+          <a class="nav__cta nav__cta--mobile" href="#contact">
+            <span>Let's Talk</span>
+            <svg class="nav__cta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M5 12h14M13 6l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
         </div>
       </div>
-    </header>
+    </div>
 
     <main>
       <!-- HERO -->

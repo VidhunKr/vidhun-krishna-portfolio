@@ -20,7 +20,6 @@
     display: grid;
     gap: 1.35rem;
     align-items: center;
-    perspective: 1000px;
   }
 
   &__media {
@@ -30,8 +29,7 @@
     border: 1px solid $border;
     background: $bg-elevated;
     aspect-ratio: 16 / 9;
-    transform-style: preserve-3d;
-    transition: transform 0.5s $ease, box-shadow 0.5s $ease;
+    transition: box-shadow 0.35s $ease;
 
     &--portrait {
       aspect-ratio: 3 / 4;
@@ -54,14 +52,11 @@
       object-fit: contain;
       object-position: center center;
       display: block;
-      transition: transform 0.9s $ease;
     }
 
-    &:hover {
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-
-      img {
-        transform: scale(1.02);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
       }
     }
   }
@@ -76,10 +71,9 @@
     text-transform: uppercase;
     padding: 0.4rem 0.65rem;
     border-radius: $radius-sm;
-    background: rgba(0, 0, 0, 0.78);
+    background: rgba(0, 0, 0, 0.82);
     border: 1px solid $border;
     color: $text-secondary;
-    backdrop-filter: blur(8px);
   }
 
   &__content {

@@ -34,6 +34,10 @@
   }
 
   function setActiveLink(id) {
+    if (!id) return;
+    // Services is not in the navbar — don't steal the active state
+    if (id === "services") return;
+
     let activeDesktop = null;
 
     desktopLinks.forEach((link) => {
@@ -48,6 +52,9 @@
 
     if (activeDesktop) moveIndicator(activeDesktop);
   }
+
+  // Used by smooth-scroll click handlers so Contact doesn't look like Projects mid-flight
+  window.__setActiveNavLink = setActiveLink;
 
   function getFocusable(container) {
     return Array.from(
@@ -79,7 +86,7 @@
     if (focusable.length) focusable[0].focus({ preventScroll: true });
   }
 
-  function closeMenu() {
+  function closeMenu(opts = {}) {
     if (!toggle || !mobile || (!menuOpen && !menuClosing)) return;
     if (!menuOpen && menuClosing) return;
 
@@ -92,7 +99,8 @@
     toggle.setAttribute("aria-label", "Open menu");
     document.body.classList.remove("nav-open");
 
-    if (lastFocused && typeof lastFocused.focus === "function") {
+    // Skip focus restore on in-page nav — it fights Lenis scrollTo on mobile
+    if (opts.restoreFocus !== false && lastFocused && typeof lastFocused.focus === "function") {
       lastFocused.focus({ preventScroll: true });
     }
 
@@ -104,6 +112,9 @@
       closeTimer = 0;
     }, MENU_CLOSE_MS);
   }
+
+  window.__closeMobileNav = closeMenu;
+  window.__isMobileNavOpen = () => menuOpen || document.body.classList.contains("nav-open");
 
   function revealNavbar() {
     if (!header) return;
@@ -252,23 +263,63 @@
 
   allNavLinks.forEach((link) => {
     link.addEventListener("click", () => {
-      if (menuOpen) closeMenu();
+      const href = link.getAttribute("href") || "";
+      const isSection = href.startsWith("#") && href.length > 1;
+      if (menuOpen) closeMenu({ restoreFocus: !isSection });
+      if (isSection) setActiveLink(href.slice(1));
     });
   });
 
-  if ("IntersectionObserver" in window && sections.length) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          setActiveLink(entry.target.id);
-        });
-      },
-      { rootMargin: "-42% 0px -48% 0px", threshold: 0 }
+  // Scroll-spy: pick the section under the navbar, force Contact near page end
+  const navSectionIds = ["home", "about", "skills", "projects", "experience", "contact"];
+  const navSections = Array.from(sections).filter((s) => navSectionIds.includes(s.id));
+
+  function updateActiveFromScroll() {
+    const scrollY = window.__lenis?.scroll ?? window.scrollY ?? 0;
+    const maxScroll = Math.max(
+      0,
+      (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight
     );
 
-    sections.forEach((section) => observer.observe(section));
+    // Contact can't always reach the viewport center — lock active state near the bottom
+    if (maxScroll > 0 && scrollY >= maxScroll - 140) {
+      setActiveLink("contact");
+      return;
+    }
+
+    const shell = document.querySelector(".nav-shell");
+    const marker = (shell ? shell.getBoundingClientRect().height : header?.offsetHeight || 80) + 12;
+    let current = "home";
+    for (let i = 0; i < navSections.length; i += 1) {
+      const section = navSections[i];
+      const top = section.getBoundingClientRect().top;
+      if (top - marker <= 0) current = section.id;
+    }
+    setActiveLink(current);
   }
+
+  let spyRaf = 0;
+  function queueSpy() {
+    if (spyRaf) return;
+    spyRaf = requestAnimationFrame(() => {
+      spyRaf = 0;
+      updateActiveFromScroll();
+    });
+  }
+
+  window.addEventListener("scroll", queueSpy, { passive: true });
+  window.addEventListener("resize", queueSpy, { passive: true });
+
+  function bindLenisSpy() {
+    const lenis = window.__lenis;
+    if (!lenis || typeof lenis.on !== "function" || lenis.__navSpyBound) return;
+    lenis.on("scroll", queueSpy);
+    lenis.__navSpyBound = true;
+  }
+  bindLenisSpy();
+  window.setTimeout(bindLenisSpy, 0);
+  window.setTimeout(bindLenisSpy, 400);
+  queueSpy();
 
   const topBtn = document.querySelector("[data-back-to-top]");
   if (topBtn) {

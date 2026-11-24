@@ -212,10 +212,11 @@
   position: relative;
   // Above page spark trail so form copy stays readable
   z-index: 5;
-  // Soft fade into the footer so the join never reads as a hard cut
-  padding-bottom: clamp(3rem, 5vw, 4.5rem);
+  // Extra bottom room so Lenis can bring Contact under the sticky nav
+  padding-bottom: clamp(4.25rem, 9vw, 6.5rem);
   min-height: 0;
   background: transparent;
+  scroll-margin-top: calc(#{$header-h} + 20px);
 
   &__panel {
     display: grid;
@@ -740,7 +741,7 @@
 
 @media (max-width: ($bp-md - 1)) {
   .contact {
-    padding-bottom: 2.25rem;
+    padding-bottom: 3.5rem;
   }
 
   .contact__panel {

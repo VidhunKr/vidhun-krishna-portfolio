@@ -35,6 +35,13 @@
     });
 
     window.__lenis = lenis;
+    // Nav scroll-spy may have booted before Lenis existed
+    if (typeof lenis.on === "function" && !lenis.__navSpyBound) {
+      lenis.on("scroll", () => {
+        window.dispatchEvent(new Event("scroll"));
+      });
+      lenis.__navSpyBound = true;
+    }
 
     // Keep page scroll soft over the form — native focus scroll fights Lenis
     document.querySelectorAll(".contact__form input, .contact__form textarea").forEach((field) => {
@@ -50,29 +57,112 @@
       );
     });
 
+    function navOffsetPx() {
+      // Glass bar only — never the full header (mobile overlay must not affect offset)
+      const shell = document.querySelector(".nav-shell");
+      if (shell) return Math.round(shell.getBoundingClientRect().height) + 20;
+      return 72;
+    }
+
+    function scrollToSection(hash, opts = {}) {
+      const id = (hash || "").replace(/^#/, "");
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      const fromMobile = !!opts.fromMobile;
+      if (
+        (fromMobile || document.body.classList.contains("nav-open")) &&
+        typeof window.__closeMobileNav === "function"
+      ) {
+        window.__closeMobileNav({ restoreFocus: false });
+      }
+
+      const run = () => {
+        if (id === "contact") revealContactPanelNow();
+        if (typeof window.__setActiveNavLink === "function") {
+          window.__setActiveNavLink(id);
+        }
+
+        if (typeof lenis.start === "function") lenis.start();
+        if (typeof lenis.resize === "function") lenis.resize();
+
+        const offset = navOffsetPx();
+        // Re-measure after menu close — absolute Y avoids Lenis element-target quirks on mobile
+        const current = typeof lenis.scroll === "number" ? lenis.scroll : window.scrollY || 0;
+        let y = Math.max(0, current + target.getBoundingClientRect().top - offset);
+        if (typeof lenis.limit === "number" && lenis.limit > 0) {
+          y = Math.min(y, lenis.limit);
+        }
+
+        lenis.scrollTo(y, {
+          duration: reducedMotion ? 0 : 1.05,
+          easing: (t) => 1 - Math.pow(1 - t, 4),
+          immediate: !!reducedMotion,
+        });
+      };
+
+      // Mobile menu close restores overflow; measure only after layout settles
+      // (nav click handler closes the menu first — always defer when from mobile)
+      const delay = fromMobile ? 120 : 0;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.setTimeout(run, delay);
+        });
+      });
+    }
+
+    window.__scrollToSection = scrollToSection;
+
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener("click", (e) => {
-        // Back-to-top is handled separately for a true top scroll
         if (anchor.hasAttribute("data-back-to-top")) return;
-        const id = anchor.getAttribute("href");
-        if (!id || id === "#") return;
-        const target = document.querySelector(id);
-        if (!target) return;
+        const href = anchor.getAttribute("href");
+        if (!href || href === "#") return;
+        if (!document.getElementById(href.slice(1))) return;
         e.preventDefault();
-        if (id === "#contact") revealContactPanelNow();
-        const header = document.querySelector("[data-nav]");
-        const offset = header ? -(header.offsetHeight + 8) : -88;
-        lenis.scrollTo(target, {
-          offset,
-          // Same soft coast as every other section (contact used to snap shorter)
-          duration: 1.15,
-          easing: (t) => 1 - Math.pow(1 - t, 4),
-        });
+        scrollToSection(href, { fromMobile: !!anchor.closest("[data-nav-mobile]") });
       });
     });
   } else {
-    document.querySelectorAll('a[href="#contact"]').forEach((anchor) => {
-      anchor.addEventListener("click", () => revealContactPanelNow());
+    function scrollToSectionNative(hash, opts = {}) {
+      const id = (hash || "").replace(/^#/, "");
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      const fromMobile = !!opts.fromMobile;
+      if (
+        (fromMobile || document.body.classList.contains("nav-open")) &&
+        typeof window.__closeMobileNav === "function"
+      ) {
+        window.__closeMobileNav({ restoreFocus: false });
+      }
+
+      const run = () => {
+        if (id === "contact") revealContactPanelNow();
+        if (typeof window.__setActiveNavLink === "function") {
+          window.__setActiveNavLink(id);
+        }
+        const shell = document.querySelector(".nav-shell");
+        const offset = shell ? Math.round(shell.getBoundingClientRect().height) + 20 : 72;
+        const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
+        window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
+      };
+
+      window.setTimeout(run, fromMobile ? 120 : 0);
+    }
+
+    window.__scrollToSection = scrollToSectionNative;
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", (e) => {
+        if (anchor.hasAttribute("data-back-to-top")) return;
+        const href = anchor.getAttribute("href");
+        if (!href || href === "#") return;
+        if (!document.getElementById(href.slice(1))) return;
+        e.preventDefault();
+        scrollToSectionNative(href, { fromMobile: !!anchor.closest("[data-nav-mobile]") });
+      });
     });
   }
 
@@ -171,74 +261,72 @@
       }
     }
 
-    gsap.utils.toArray(".projects__item").forEach((item) => {
-      const media = item.querySelector(".projects__media");
-      const content = item.querySelector(".projects__content");
-      if (media) {
-        gsap.from(media, {
-          scrollTrigger: { trigger: item, start: "top 82%", once: true },
-          y: 40,
-          opacity: 0,
-          duration: 0.85,
-          ease: "power2.out",
-        });
-      }
-      if (content) {
-        gsap.from(content, {
-          scrollTrigger: { trigger: item, start: "top 82%", once: true },
-          y: 28,
-          opacity: 0,
-          duration: 0.75,
-          delay: 0.08,
-          ease: "power2.out",
-        });
-      }
-    });
-
-    // Soft scrub with lag so scroll stays smooth
-    const glow = document.querySelector(".hero__glow");
-    if (glow) {
-      gsap.to(glow, {
-        y: 56,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".hero",
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.6,
+    // One batched reveal for projects — avoids N ScrollTriggers hitching through the list
+    const projectItems = gsap.utils.toArray(".projects__item");
+    if (projectItems.length) {
+      ScrollTrigger.batch(projectItems, {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) => {
+          gsap.to(batch, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: 0.06,
+            ease: "power2.out",
+            overwrite: true,
+          });
         },
       });
+      gsap.set(projectItems, { autoAlpha: 0, y: 22 });
     }
 
-    const footer = document.querySelector("[data-footer]");
-    if (footer) {
-      const watermark = footer.querySelector("[data-footer-parallax]");
-      const monogram = footer.querySelector("[data-footer-parallax-slow]");
-      if (watermark) {
-        // Keep horizontal center via CSS; only scrub vertical offset
-        gsap.set(watermark, { x: 0, yPercent: -50 });
-        gsap.to(watermark, {
+    // Skip continuous scrub parallax on coarse pointers (major mobile jank source)
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    if (!coarse) {
+      const glow = document.querySelector(".hero__glow");
+      if (glow) {
+        gsap.to(glow, {
           y: 40,
           ease: "none",
           scrollTrigger: {
-            trigger: footer,
-            start: "top bottom",
+            trigger: ".hero",
+            start: "top top",
             end: "bottom top",
-            scrub: 0.75,
+            scrub: 0.85,
           },
         });
       }
-      if (monogram) {
-        gsap.to(monogram, {
-          y: 24,
-          ease: "none",
-          scrollTrigger: {
-            trigger: footer,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 0.75,
-          },
-        });
+
+      const footer = document.querySelector("[data-footer]");
+      if (footer) {
+        const watermark = footer.querySelector("[data-footer-parallax]");
+        const monogram = footer.querySelector("[data-footer-parallax-slow]");
+        if (watermark) {
+          gsap.set(watermark, { x: 0, yPercent: -50 });
+          gsap.to(watermark, {
+            y: 28,
+            ease: "none",
+            scrollTrigger: {
+              trigger: footer,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          });
+        }
+        if (monogram) {
+          gsap.to(monogram, {
+            y: 16,
+            ease: "none",
+            scrollTrigger: {
+              trigger: footer,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          });
+        }
       }
     }
   }
@@ -306,20 +394,7 @@
       );
     }
 
-    document.querySelectorAll(".projects__media").forEach((card) => {
-      bindPointerRaf(
-        card,
-        (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width;
-          const y = (e.clientY - rect.top) / rect.height;
-          card.style.transform = `translate3d(0,-4px,0) rotateX(${(0.5 - y) * 5}deg) rotateY(${(x - 0.5) * 5}deg)`;
-        },
-        () => {
-          card.style.transform = "";
-        }
-      );
-    });
+    // Project media tilt skipped — was forcing layout/composite work while scrolling the projects list
 
     function bindTiltCards(selector, glowSelector, strength = 5) {
       document.querySelectorAll(selector).forEach((card) => {
