@@ -264,11 +264,7 @@ $font-card: $font-display;
     gap: 1.35rem;
   }
 
-  // 7 cards: 4 on first row, 3 centered on second
-  .services__grid .playing-card:nth-child(5) {
-    grid-column: 2;
-  }
-
+  // 5th card starts from the left (no centered second row)
   .playing-card__suit--svg {
     width: 4.75rem;
     height: 4.75rem;
