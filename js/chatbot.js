@@ -20,15 +20,27 @@
   const charCountEl = root.querySelector("[data-chatbot-char]");
 
   const TIP_MESSAGES = [
-    "Ask me anything!",
-    "Curious about my skills?",
-    "Want project details?",
+    "Ask me anything",
+    "About my skills?",
+    "See my projects",
     "Need a quick intro?",
     "How can I help?",
+  ];
+  const SUGGESTIONS = [
+    "What are your technical skills?",
+    "Tell me about your projects.",
+    "What is your Angular experience?",
+    "Do you have experience with Ionic?",
+    "What backend technologies do you know?",
+    "How can I hire you?",
+    "How can I contact you?",
+    "Where are you based?",
+    "What is your work experience?",
   ];
   const TIP_SHOW_MS = 4200;
   const TIP_FIRST_DELAY_MS = 4500;
   const TIP_INTERVAL_MS = 22000;
+  const SUGGESTION_COUNT = 3;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let open = false;
@@ -38,6 +50,7 @@
   let tipIndex = 0;
   let tipHideTimer = 0;
   let tipLoopTimer = 0;
+  let askedQuestions = new Set();
 
   function uid(prefix) {
     const r =
@@ -103,11 +116,22 @@
     }, TIP_FIRST_DELAY_MS);
   }
 
+  function setPageScrollLocked(locked) {
+    const lenis = window.__lenis;
+    if (lenis) {
+      if (locked) lenis.stop();
+      else lenis.start();
+    }
+    document.documentElement.classList.toggle("chatbot-scroll-lock", locked);
+    document.body.classList.toggle("chatbot-scroll-lock", locked);
+  }
+
   function setOpen(next) {
     open = next;
     root.classList.toggle("is-open", open);
     launcher?.setAttribute("aria-expanded", open ? "true" : "false");
     panel?.setAttribute("aria-hidden", open ? "false" : "true");
+    setPageScrollLocked(open);
     if (open) {
       hideTip();
       window.setTimeout(() => input?.focus(), 160);
@@ -117,6 +141,17 @@
   function scrollBottom() {
     if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
   }
+
+  // Keep wheel/touch scroll inside the chat — don’t pass it to the page/Lenis
+  function keepScrollInsideChat(e) {
+    if (!open) return;
+    e.stopPropagation();
+  }
+
+  panel?.addEventListener("wheel", keepScrollInsideChat, { passive: true });
+  panel?.addEventListener("touchmove", keepScrollInsideChat, { passive: true });
+  messagesEl?.addEventListener("wheel", keepScrollInsideChat, { passive: true });
+  messagesEl?.addEventListener("touchmove", keepScrollInsideChat, { passive: true });
 
   function addBubble(role, text) {
     const row = document.createElement("div");
@@ -149,27 +184,49 @@
       "Ask about Vidhun's skills, projects, experience, or contact details.";
   }
 
-  function showSuggestions(show) {
-    if (suggestionsEl) suggestionsEl.hidden = !show;
+  function pickSuggestions(exclude) {
+    const skip = new Set([...(exclude || []), ...askedQuestions]);
+    const unused = SUGGESTIONS.filter((q) => !skip.has(q));
+    const pool = unused.length >= SUGGESTION_COUNT ? unused : SUGGESTIONS.filter((q) => q !== exclude);
+    const shuffled = pool.slice().sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, SUGGESTION_COUNT);
+  }
+
+  function renderSuggestions(exclude) {
+    if (!suggestionsEl) return;
+    suggestionsEl.hidden = false;
+    suggestionsEl.innerHTML = "";
+    pickSuggestions(exclude).forEach((q) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chatbot__chip";
+      btn.setAttribute("data-chatbot-suggestion", q);
+      btn.textContent = q;
+      suggestionsEl.appendChild(btn);
+    });
   }
 
   function renderWelcome() {
+    askedQuestions = new Set();
     messagesEl.innerHTML = "";
     addBubble(
       "assistant",
       "Hi! I'm Vidhun's portfolio assistant. I can help you learn about his skills, projects, experience and background. What would you like to know?"
     );
-    showSuggestions(true);
+    renderSuggestions();
   }
 
   function restore() {
+    askedQuestions = new Set(
+      state.messages.filter((m) => m.role === "user").map((m) => String(m.content || "").trim())
+    );
     if (!state.messages.length) {
       renderWelcome();
       return;
     }
     messagesEl.innerHTML = "";
     state.messages.forEach((m) => addBubble(m.role, m.content));
-    showSuggestions(!state.messages.some((m) => m.role === "user"));
+    renderSuggestions();
   }
 
   function ask(raw) {
@@ -181,7 +238,7 @@
       return setStatus("Conversation limit reached. Start a new conversation.", true);
     }
 
-    showSuggestions(false);
+    askedQuestions.add(content);
     addBubble("user", content);
     state.messages.push({ role: "user", content });
     persist();
@@ -206,6 +263,7 @@
       }
       updateChar();
       if (sendBtn) sendBtn.disabled = true;
+      renderSuggestions(content);
     }, 350);
   }
 

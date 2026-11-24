@@ -944,8 +944,9 @@
       <div
         class="chatbot__panel"
         data-chatbot-panel
+        data-lenis-prevent
         role="dialog"
-        aria-modal="false"
+        aria-modal="true"
         aria-hidden="true"
         aria-labelledby="chatbot-title"
         aria-describedby="chatbot-subtitle"
@@ -982,29 +983,7 @@
 
         <div class="chatbot__messages" data-chatbot-messages aria-live="polite"></div>
 
-        <div class="chatbot__suggestions" data-chatbot-suggestions>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="What are your technical skills?">
-            What are your technical skills?
-          </button>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="Tell me about your projects.">
-            Tell me about your projects.
-          </button>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="What is your Angular experience?">
-            What is your Angular experience?
-          </button>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="Do you have experience with Ionic?">
-            Do you have experience with Ionic?
-          </button>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="What backend technologies do you know?">
-            What backend technologies do you know?
-          </button>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="How can I hire you?">
-            How can I hire you?
-          </button>
-          <button type="button" class="chatbot__chip" data-chatbot-suggestion="How can I contact you?">
-            How can I contact you?
-          </button>
-        </div>
+        <div class="chatbot__suggestions" data-chatbot-suggestions aria-label="Suggested questions"></div>
 
         <p class="chatbot__status" data-chatbot-status aria-live="polite"></p>
 
