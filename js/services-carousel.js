@@ -77,10 +77,11 @@
       modifier: 1.05,
       slideShadows: false,
     };
+    // Keep mobile Coverflow subtle — heavy 3D + autoplay felt stuck / “too much” on phones
     const coverflowMobile = {
-      rotate: 16,
-      stretch: -10,
-      depth: 100,
+      rotate: 8,
+      stretch: -4,
+      depth: 48,
       modifier: 1,
       slideShadows: false,
     };
@@ -89,7 +90,8 @@
     let lastActive = -1;
     let autoTimer = 0;
     let inView = false;
-    const slideSpeed = reducedMotion ? 0 : isMobile || isCoarse ? 420 : 600;
+    const touchDevice = isMobile || isCoarse;
+    const slideSpeed = reducedMotion ? 0 : touchDevice ? 280 : 600;
 
     function silentTo(sw, index) {
       // Never touch window/Lenis scroll here — that was yanking the page to the top
@@ -131,13 +133,12 @@
       loop: false,
       speed: slideSpeed,
       watchSlidesProgress: true,
-      spaceBetween: isMobile ? -12 : -24,
+      spaceBetween: touchDevice ? -6 : -24,
       initialSlide: bandStart,
-      resistanceRatio: 0.85,
-      longSwipesRatio: 0.18,
-      longSwipesMs: 280,
-      // Lower threshold so sideways flicks register on phones
-      threshold: isCoarse ? 6 : 5,
+      resistanceRatio: touchDevice ? 0.65 : 0.85,
+      longSwipesRatio: touchDevice ? 0.12 : 0.18,
+      longSwipesMs: touchDevice ? 220 : 280,
+      threshold: touchDevice ? 5 : 5,
       followFinger: true,
       allowTouchMove: true,
       simulateTouch: true,
@@ -145,19 +146,18 @@
       touchStartPreventDefault: true,
       touchMoveStopPropagation: false,
       touchReleaseOnEdges: true,
-      // Wider angle so slightly diagonal swipes still move cards
-      touchAngle: isCoarse ? 45 : 35,
-      // Must be false on touch or preventDefault never runs and the deck feels stuck
-      passiveListeners: !(isMobile || isCoarse),
+      touchAngle: touchDevice ? 42 : 35,
+      // Non-passive on touch so Swiper can own sideways flicks
+      passiveListeners: !touchDevice,
       a11y: { enabled: false },
       keyboard: { enabled: false },
       navigation: false,
       autoplay: false,
-      coverflowEffect: isMobile ? { ...coverflowMobile } : { ...coverflowBase },
+      coverflowEffect: touchDevice ? { ...coverflowMobile } : { ...coverflowBase },
       breakpoints: {
         0: {
-          spaceBetween: -10,
-          speed: reducedMotion ? 0 : 400,
+          spaceBetween: -6,
+          speed: reducedMotion ? 0 : 280,
           coverflowEffect: { ...coverflowMobile },
         },
         768: {
@@ -180,7 +180,7 @@
       on: {
         init(sw) {
           root.classList.add("is-ready");
-          if (isMobile || isCoarse) root.classList.add("is-touch");
+          if (touchDevice) root.classList.add("is-touch");
           buildBullets();
           neutralizeFocus(sw);
           keepInBand(sw);
@@ -204,7 +204,8 @@
           stopAuto();
         },
         touchEnd() {
-          if (inView && !reducedMotion) startAuto();
+          // No autoplay restart on phones — it fights the user’s swipe
+          if (!touchDevice && inView && !reducedMotion) startAuto();
         },
         sliderFirstMove() {
           stopAuto();
@@ -238,7 +239,8 @@
     }
 
     function startAuto() {
-      if (reducedMotion) return;
+      // Desktop only — mobile auto-advance feels heavy and steals swipe control
+      if (reducedMotion || touchDevice) return;
       stopAuto();
       autoTimer = window.setTimeout(() => {
         if (inView && !root.matches(":hover") && !swiper.animating) go(1);
@@ -258,7 +260,7 @@
         { threshold: 0.2 }
       );
       io.observe(root);
-    } else {
+    } else if (!touchDevice) {
       inView = true;
       startAuto();
     }

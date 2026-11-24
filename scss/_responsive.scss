@@ -246,20 +246,33 @@
 
   .services__carousel {
     max-width: 100%;
-    min-height: 22rem;
+    min-height: 18.5rem;
   }
 
   .services .swiper {
-    padding-top: 1.1rem;
-    padding-bottom: 1.35rem;
-    perspective: 900px;
-    // Cheaper paint on mobile — masks + deep 3D were hitching Lenis scroll
+    padding-top: 0.85rem;
+    padding-bottom: 1rem;
+    // Flatter stage on phones — less 3D paint cost / less “stuck” feel
+    perspective: 600px;
     -webkit-mask-image: none;
     mask-image: none;
   }
 
   .services .swiper-slide {
-    width: min(82vw, 280px);
+    width: min(78vw, 260px);
+  }
+
+  .services .swiper-slide-prev,
+  .services .swiper-slide-next {
+    opacity: 0.55 !important;
+  }
+
+  .services .swiper-slide[data-depth="2"],
+  .services .swiper-slide[data-depth="3"],
+  .services .swiper-slide[data-depth="far"] {
+    opacity: 0 !important;
+    pointer-events: none;
+    visibility: hidden;
   }
 
   .playing-card {
@@ -287,21 +300,20 @@
     min-width: 0;
   }
 
-  .services .swiper-slide[data-depth="3"],
-  .services .swiper-slide[data-depth="far"] {
-    opacity: 0 !important;
-    pointer-events: none;
-  }
-
   .services__carousel.is-touch .playing-card__shine {
     display: none;
   }
 
   .services__carousel.is-touch .playing-card.is-active .playing-card__face {
+    // Lighter glow — less GPU blur on scroll/swipe
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 16px 32px rgba(0, 0, 0, 0.45),
-      0 0 22px rgba(91, 140, 255, 0.16);
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 10px 22px rgba(0, 0, 0, 0.4);
+  }
+
+  .services__carousel.is-touch .playing-card__face {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .playing-card__content {
