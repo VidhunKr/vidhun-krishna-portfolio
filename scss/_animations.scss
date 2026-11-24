@@ -87,6 +87,21 @@ body.is-ready:not(.has-hero-gsap) .hero__visual {
   }
 }
 
+// Shorter, cheaper reveals on phones — less transform work while scrolling
+@media (max-width: ($bp-md - 1)), (pointer: coarse) {
+  .reveal {
+    transform: translateY(8px);
+    transition: opacity 0.35s $ease, transform 0.35s $ease;
+  }
+
+  .reveal-delay-1,
+  .reveal-delay-2,
+  .reveal-delay-3,
+  .reveal-delay-4 {
+    transition-delay: 0s;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;

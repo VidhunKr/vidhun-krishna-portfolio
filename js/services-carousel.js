@@ -125,58 +125,68 @@
       return ((sw.activeIndex % total) + total) % total;
     }
 
+    // Flat slide on phones (no Coverflow 3D) — biggest mobile lag saver for this section
+    const mobileSlideMode = touchDevice;
+
     const swiper = new Swiper(el, {
-      effect: "coverflow",
+      effect: mobileSlideMode ? "slide" : "coverflow",
       grabCursor: !isCoarse,
       centeredSlides: true,
       slidesPerView: "auto",
       loop: false,
       speed: slideSpeed,
-      watchSlidesProgress: true,
-      spaceBetween: touchDevice ? -6 : -24,
+      watchSlidesProgress: !mobileSlideMode,
+      spaceBetween: mobileSlideMode ? 14 : -24,
       initialSlide: bandStart,
-      resistanceRatio: touchDevice ? 0.65 : 0.85,
-      longSwipesRatio: touchDevice ? 0.12 : 0.18,
-      longSwipesMs: touchDevice ? 220 : 280,
-      threshold: touchDevice ? 5 : 5,
+      resistanceRatio: mobileSlideMode ? 0.55 : 0.85,
+      longSwipesRatio: mobileSlideMode ? 0.1 : 0.18,
+      longSwipesMs: mobileSlideMode ? 200 : 280,
+      threshold: mobileSlideMode ? 4 : 5,
       followFinger: true,
       allowTouchMove: true,
       simulateTouch: true,
-      // Claim horizontal swipes; CSS touch-action:pan-y still lets the page scroll vertically
       touchStartPreventDefault: true,
       touchMoveStopPropagation: false,
       touchReleaseOnEdges: true,
-      touchAngle: touchDevice ? 42 : 35,
-      // Non-passive on touch so Swiper can own sideways flicks
+      touchAngle: mobileSlideMode ? 48 : 35,
       passiveListeners: !touchDevice,
       a11y: { enabled: false },
       keyboard: { enabled: false },
       navigation: false,
       autoplay: false,
-      coverflowEffect: touchDevice ? { ...coverflowMobile } : { ...coverflowBase },
-      breakpoints: {
-        0: {
-          spaceBetween: -6,
-          speed: reducedMotion ? 0 : 280,
-          coverflowEffect: { ...coverflowMobile },
-        },
-        768: {
-          spaceBetween: -20,
-          speed: reducedMotion ? 0 : 520,
-          coverflowEffect: {
-            rotate: 28,
-            stretch: -26,
-            depth: 190,
-            modifier: 1,
-            slideShadows: false,
+      ...(mobileSlideMode
+        ? {}
+        : { coverflowEffect: { ...coverflowBase } }),
+      breakpoints: mobileSlideMode
+        ? {
+            0: {
+              spaceBetween: 14,
+              speed: reducedMotion ? 0 : 260,
+            },
+          }
+        : {
+            0: {
+              spaceBetween: -6,
+              speed: reducedMotion ? 0 : 280,
+              coverflowEffect: { ...coverflowMobile },
+            },
+            768: {
+              spaceBetween: -20,
+              speed: reducedMotion ? 0 : 520,
+              coverflowEffect: {
+                rotate: 28,
+                stretch: -26,
+                depth: 190,
+                modifier: 1,
+                slideShadows: false,
+              },
+            },
+            1024: {
+              spaceBetween: -26,
+              speed: reducedMotion ? 0 : 600,
+              coverflowEffect: { ...coverflowBase },
+            },
           },
-        },
-        1024: {
-          spaceBetween: -26,
-          speed: reducedMotion ? 0 : 600,
-          coverflowEffect: { ...coverflowBase },
-        },
-      },
       on: {
         init(sw) {
           root.classList.add("is-ready");

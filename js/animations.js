@@ -1,5 +1,9 @@
 (function () {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const narrowViewport = window.matchMedia("(max-width: 767px)").matches;
+  // Phones/tablets: native scroll only — Lenis + GSAP scrub was the main lag source
+  const preferNativeScroll = coarsePointer || narrowViewport;
 
   function revealContactPanelNow() {
     const panel = document.querySelector("[data-contact-panel]");
@@ -17,23 +21,73 @@
 
   window.__revealContactPanel = revealContactPanelNow;
 
-  // Lenis smooth scroll — longer coast, softer wheel response
+  function navOffsetPx() {
+    const shell = document.querySelector(".nav-shell");
+    if (shell) return Math.round(shell.getBoundingClientRect().height) + 20;
+    return 72;
+  }
+
+  function bindHashScroll(scrollFn) {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", (e) => {
+        if (anchor.hasAttribute("data-back-to-top")) return;
+        const href = anchor.getAttribute("href");
+        if (!href || href === "#") return;
+        if (!document.getElementById(href.slice(1))) return;
+        e.preventDefault();
+        scrollFn(href, { fromMobile: !!anchor.closest("[data-nav-mobile]") });
+      });
+    });
+  }
+
+  function scrollToSectionNative(hash, opts = {}) {
+    const id = (hash || "").replace(/^#/, "");
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const fromMobile = !!opts.fromMobile;
+    if (
+      (fromMobile || document.body.classList.contains("nav-open")) &&
+      typeof window.__closeMobileNav === "function"
+    ) {
+      window.__closeMobileNav({ restoreFocus: false });
+    }
+
+    const run = () => {
+      if (id === "contact") revealContactPanelNow();
+      if (typeof window.__setActiveNavLink === "function") {
+        window.__setActiveNavLink(id);
+      }
+      const offset = navOffsetPx();
+      const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
+      window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
+      // Correct once after layout settles (lazy images / fonts)
+      window.setTimeout(() => {
+        const corrected = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
+        if (Math.abs(corrected - window.scrollY) > 24) {
+          window.scrollTo({ top: corrected, behavior: "auto" });
+        }
+      }, 280);
+    };
+
+    window.setTimeout(run, fromMobile ? 120 : 0);
+  }
+
+  // Lenis — desktop / fine pointer only (keeps wheel smooth without mobile lag)
   let lenis;
-  if (!reducedMotion && typeof Lenis !== "undefined") {
-    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  if (!reducedMotion && !preferNativeScroll && typeof Lenis !== "undefined") {
     lenis = new Lenis({
-      duration: coarsePointer ? 1.15 : 1.65,
+      duration: 1.2,
       easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
-      // Native touch on phones — syncTouch was trapping scroll mid-page on iOS/Android
       syncTouch: false,
-      touchMultiplier: coarsePointer ? 1.35 : 1.55,
-      wheelMultiplier: 0.68,
+      touchMultiplier: 1.5,
+      wheelMultiplier: 0.78,
       infinite: false,
     });
 
     window.__lenis = lenis;
-    // Nav scroll-spy may have booted before Lenis existed
+
     if (typeof lenis.on === "function" && !lenis.__navSpyBound) {
       lenis.on("scroll", () => {
         window.dispatchEvent(new Event("scroll"));
@@ -41,12 +95,10 @@
       lenis.__navSpyBound = true;
     }
 
-    // Keep page scroll soft over the form — native focus scroll fights Lenis
     document.querySelectorAll(".contact__form input, .contact__form textarea").forEach((field) => {
       field.addEventListener(
         "focus",
         () => {
-          // Measure after keyboard/caret settles; keeps Lenis height in sync
           requestAnimationFrame(() => {
             if (typeof lenis.resize === "function") lenis.resize();
           });
@@ -54,13 +106,6 @@
         { passive: true }
       );
     });
-
-    function navOffsetPx() {
-      // Glass bar only — never the full header (mobile overlay must not affect offset)
-      const shell = document.querySelector(".nav-shell");
-      if (shell) return Math.round(shell.getBoundingClientRect().height) + 20;
-      return 72;
-    }
 
     function scrollToSection(hash, opts = {}) {
       const id = (hash || "").replace(/^#/, "");
@@ -92,34 +137,27 @@
           y = Math.min(y, lenis.limit);
         }
 
-        const go = (pos, duration) => {
-          lenis.scrollTo(pos, {
-            duration,
-            easing: (t) => 1 - Math.pow(1 - t, 4),
-            immediate: !!reducedMotion || duration === 0,
-            onComplete: () => {
-              // Second pass: layout may expand as sections paint — correct landing
-              if (typeof lenis.resize === "function") lenis.resize();
-              const cur = typeof lenis.scroll === "number" ? lenis.scroll : window.scrollY || 0;
-              let corrected = Math.max(0, cur + target.getBoundingClientRect().top - offset);
-              if (typeof lenis.limit === "number" && lenis.limit > 0) {
-                corrected = Math.min(corrected, lenis.limit);
-              }
-              if (Math.abs(corrected - cur) > 24) {
-                lenis.scrollTo(corrected, {
-                  duration: reducedMotion ? 0 : 0.45,
-                  easing: (t) => 1 - Math.pow(1 - t, 3),
-                  immediate: !!reducedMotion,
-                });
-              }
-            },
-          });
-        };
-
-        go(y, reducedMotion ? 0 : 1.05);
+        lenis.scrollTo(y, {
+          duration: reducedMotion ? 0 : 0.9,
+          easing: (t) => 1 - Math.pow(1 - t, 4),
+          immediate: !!reducedMotion,
+          onComplete: () => {
+            if (typeof lenis.resize === "function") lenis.resize();
+            const cur = typeof lenis.scroll === "number" ? lenis.scroll : window.scrollY || 0;
+            let corrected = Math.max(0, cur + target.getBoundingClientRect().top - offset);
+            if (typeof lenis.limit === "number" && lenis.limit > 0) {
+              corrected = Math.min(corrected, lenis.limit);
+            }
+            if (Math.abs(corrected - cur) > 24) {
+              lenis.scrollTo(corrected, {
+                duration: 0.35,
+                easing: (t) => 1 - Math.pow(1 - t, 3),
+              });
+            }
+          },
+        });
       };
 
-      // Mobile menu close restores overflow; measure only after layout settles
       const delay = fromMobile ? 120 : 0;
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -129,64 +167,22 @@
     }
 
     window.__scrollToSection = scrollToSection;
-
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", (e) => {
-        if (anchor.hasAttribute("data-back-to-top")) return;
-        const href = anchor.getAttribute("href");
-        if (!href || href === "#") return;
-        if (!document.getElementById(href.slice(1))) return;
-        e.preventDefault();
-        scrollToSection(href, { fromMobile: !!anchor.closest("[data-nav-mobile]") });
-      });
-    });
+    bindHashScroll(scrollToSection);
   } else {
-    function scrollToSectionNative(hash, opts = {}) {
-      const id = (hash || "").replace(/^#/, "");
-      const target = document.getElementById(id);
-      if (!target) return;
-
-      const fromMobile = !!opts.fromMobile;
-      if (
-        (fromMobile || document.body.classList.contains("nav-open")) &&
-        typeof window.__closeMobileNav === "function"
-      ) {
-        window.__closeMobileNav({ restoreFocus: false });
-      }
-
-      const run = () => {
-        if (id === "contact") revealContactPanelNow();
-        if (typeof window.__setActiveNavLink === "function") {
-          window.__setActiveNavLink(id);
-        }
-        const shell = document.querySelector(".nav-shell");
-        const offset = shell ? Math.round(shell.getBoundingClientRect().height) + 20 : 72;
-        const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
-        window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
-      };
-
-      window.setTimeout(run, fromMobile ? 120 : 0);
-    }
-
+    window.__lenis = null;
     window.__scrollToSection = scrollToSectionNative;
-
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", (e) => {
-        if (anchor.hasAttribute("data-back-to-top")) return;
-        const href = anchor.getAttribute("href");
-        if (!href || href === "#") return;
-        if (!document.getElementById(href.slice(1))) return;
-        e.preventDefault();
-        scrollToSectionNative(href, { fromMobile: !!anchor.closest("[data-nav-mobile]") });
-      });
-    });
+    bindHashScroll(scrollToSectionNative);
   }
 
-  // Reveal on scroll (fallback if GSAP missing)
+  // Lightweight reveals (mobile + reduced motion + no GSAP)
   const reveals = document.querySelectorAll(".reveal");
   const contactPanelFallback = document.querySelector("[data-contact-panel]");
-  if (reducedMotion || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+  const useLiteReveals =
+    reducedMotion || preferNativeScroll || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined";
+
+  if (useLiteReveals) {
     if (contactPanelFallback) contactPanelFallback.classList.add("is-in");
+    document.querySelectorAll(".projects__item").forEach((el) => el.classList.add("is-visible"));
     if ("IntersectionObserver" in window) {
       const io = new IntersectionObserver(
         (entries) => {
@@ -197,7 +193,7 @@
             }
           });
         },
-        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+        { threshold: 0.08, rootMargin: "0px 0px -4% 0px" }
       );
       reveals.forEach((el) => io.observe(el));
     } else {
@@ -205,7 +201,8 @@
     }
   }
 
-  if (!reducedMotion && typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+  // Full GSAP motion — desktop only
+  if (!reducedMotion && !preferNativeScroll && typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
     gsap.config({ force3D: true });
     ScrollTrigger.config({ ignoreMobileResize: true });
@@ -215,12 +212,10 @@
       gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
       });
-      // Allow lag catch-up — lagSmoothing(0) caused scroll hitching
-      gsap.ticker.lagSmoothing(500, 33);
+      gsap.ticker.lagSmoothing(300, 16);
     }
 
-    // Batch reveals — fewer ScrollTriggers, play once
-    gsap.set(".reveal", { autoAlpha: 0, y: 22 });
+    gsap.set(".reveal", { autoAlpha: 0, y: 18 });
     ScrollTrigger.batch(".reveal", {
       start: "top 92%",
       once: true,
@@ -228,9 +223,9 @@
         gsap.to(batch, {
           autoAlpha: 1,
           y: 0,
-          duration: 0.7,
+          duration: 0.55,
           ease: "power2.out",
-          stagger: 0.05,
+          stagger: 0.04,
           overwrite: true,
           onStart() {
             batch.forEach((el) => el.classList.add("is-visible"));
@@ -239,8 +234,6 @@
       },
     });
 
-    // Contact panel: opacity-only fade — no Y transform (backdrop-filter +
-    // translate during Lenis scroll was hitching the wheel coast)
     const contactPanel = document.querySelector("[data-contact-panel]");
     if (contactPanel && !contactPanel.classList.contains("is-in")) {
       const rises = contactPanel.querySelectorAll("[data-contact-rise]");
@@ -258,7 +251,7 @@
 
       contactTl.to(contactPanel, {
         autoAlpha: 1,
-        duration: 0.45,
+        duration: 0.4,
         onStart() {
           contactPanel.classList.add("is-in");
         },
@@ -269,17 +262,17 @@
           rises,
           {
             autoAlpha: 1,
-            duration: 0.35,
-            stagger: 0.04,
+            duration: 0.3,
+            stagger: 0.03,
           },
-          "-=0.3"
+          "-=0.25"
         );
       }
     }
 
-    // One batched reveal for projects — avoids N ScrollTriggers hitching through the list
     const projectItems = gsap.utils.toArray(".projects__item");
     if (projectItems.length) {
+      gsap.set(projectItems, { autoAlpha: 0, y: 18 });
       ScrollTrigger.batch(projectItems, {
         start: "top 88%",
         once: true,
@@ -287,62 +280,57 @@
           gsap.to(batch, {
             autoAlpha: 1,
             y: 0,
-            duration: 0.55,
-            stagger: 0.06,
+            duration: 0.45,
+            stagger: 0.04,
             ease: "power2.out",
             overwrite: true,
           });
         },
       });
-      gsap.set(projectItems, { autoAlpha: 0, y: 22 });
     }
 
-    // Skip continuous scrub parallax on coarse pointers (major mobile jank source)
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    if (!coarse) {
-      const glow = document.querySelector(".hero__glow");
-      if (glow) {
-        gsap.to(glow, {
-          y: 40,
+    const glow = document.querySelector(".hero__glow");
+    if (glow) {
+      gsap.to(glow, {
+        y: 40,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.85,
+        },
+      });
+    }
+
+    const footer = document.querySelector("[data-footer]");
+    if (footer) {
+      const watermark = footer.querySelector("[data-footer-parallax]");
+      const monogram = footer.querySelector("[data-footer-parallax-slow]");
+      if (watermark) {
+        gsap.set(watermark, { x: 0, yPercent: -50 });
+        gsap.to(watermark, {
+          y: 28,
           ease: "none",
           scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
+            trigger: footer,
+            start: "top bottom",
             end: "bottom top",
-            scrub: 0.85,
+            scrub: 1,
           },
         });
       }
-
-      const footer = document.querySelector("[data-footer]");
-      if (footer) {
-        const watermark = footer.querySelector("[data-footer-parallax]");
-        const monogram = footer.querySelector("[data-footer-parallax-slow]");
-        if (watermark) {
-          gsap.set(watermark, { x: 0, yPercent: -50 });
-          gsap.to(watermark, {
-            y: 28,
-            ease: "none",
-            scrollTrigger: {
-              trigger: footer,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          });
-        }
-        if (monogram) {
-          gsap.to(monogram, {
-            y: 16,
-            ease: "none",
-            scrollTrigger: {
-              trigger: footer,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          });
-        }
+      if (monogram) {
+        gsap.to(monogram, {
+          y: 16,
+          ease: "none",
+          scrollTrigger: {
+            trigger: footer,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
       }
     }
   }
@@ -372,8 +360,8 @@
     });
   }
 
-  // Magnetic buttons (rAF-throttled)
-  if (!reducedMotion) {
+  // Magnetic + tilt — fine pointer / desktop only (never on phones)
+  if (!reducedMotion && window.matchMedia("(pointer: fine)").matches) {
     document.querySelectorAll(".btn").forEach((btn) => {
       bindPointerRaf(
         btn,
@@ -388,10 +376,7 @@
         }
       );
     });
-  }
 
-  // Hero + card tilt (lighter, rAF-throttled)
-  if (!reducedMotion && window.matchMedia("(pointer: fine)").matches) {
     const visual = document.querySelector(".hero__visual");
     if (visual) {
       const frame = visual.querySelector(".hero__frame");
@@ -409,8 +394,6 @@
         }
       );
     }
-
-    // Project media tilt skipped — was forcing layout/composite work while scrolling the projects list
 
     function bindTiltCards(selector, glowSelector, strength = 5) {
       document.querySelectorAll(selector).forEach((card) => {
@@ -440,7 +423,6 @@
       });
     }
 
-    // Service playing cards use Swiper Coverflow — skip tilt to avoid transform conflicts
     bindTiltCards("[data-skill-card]", "[data-skill-glow]", 4);
   }
 
@@ -459,7 +441,7 @@
         }
         const suffix = el.getAttribute("data-suffix") || "";
         const decimals = Number(el.getAttribute("data-decimals") || 0);
-        const duration = 1400;
+        const duration = preferNativeScroll ? 900 : 1400;
         const start = performance.now();
         function format(value) {
           if (decimals > 0) return value.toFixed(decimals);
@@ -481,7 +463,7 @@
   stats.forEach((s) => countIo.observe(s));
 
   // Drive Lenis via rAF when GSAP ticker is not handling it
-  if (lenis && (typeof gsap === "undefined" || reducedMotion)) {
+  if (lenis && (typeof gsap === "undefined" || reducedMotion || preferNativeScroll)) {
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
