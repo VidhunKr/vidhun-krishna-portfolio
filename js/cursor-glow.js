@@ -172,7 +172,7 @@
       const next =
         !onMenu &&
         !!t.closest(
-          "a, button, .btn, [data-magnetic], [data-service-card], [data-skill-card], .projects__media, input, textarea"
+          "a, button, .btn, [data-magnetic], [data-skill-card], .playing-card, .projects__media, input, textarea"
         );
       if (next && !hovering && mx > 0 && !menuHover) {
         spawn(mx, my, true);

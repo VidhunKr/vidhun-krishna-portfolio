@@ -345,7 +345,7 @@
       });
     }
 
-    bindTiltCards("[data-service-card]", "[data-service-glow]", 5);
+    // Service playing cards use Swiper Coverflow — skip tilt to avoid transform conflicts
     bindTiltCards("[data-skill-card]", "[data-skill-glow]", 4);
   }
 

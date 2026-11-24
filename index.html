@@ -172,8 +172,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
     <link rel="stylesheet" href="css/style.css" />
     <!-- Critical images: start early so first paint isn't empty -->
@@ -653,7 +657,7 @@
         </div>
       </section>
 
-      <!-- SERVICES -->
+      <!-- SERVICES — luxury playing-card Coverflow -->
       <section class="services" id="services">
         <div class="container">
           <div class="services__header">
@@ -667,90 +671,222 @@
             </p>
           </div>
 
-          <div class="services__grid" data-services-grid>
-            <article class="services__card reveal" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">01</span>
-              <div class="services__visual" aria-hidden="true">
-                <span class="services__dot"></span>
-                <span class="services__line"></span>
+          <div class="services__carousel reveal" data-services-carousel>
+            <div class="swiper" data-services-swiper>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="spade">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">A</span>
+                        <span class="playing-card__pip" aria-hidden="true">♠</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♠</div>
+                      <p class="playing-card__label">01 · Frontend</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">Frontend Application Development</h3>
+                        <p class="playing-card__desc">
+                          End-to-end interface builds with maintainable structure and thoughtful UX.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">A</span>
+                        <span class="playing-card__pip" aria-hidden="true">♠</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="diamond">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">2</span>
+                        <span class="playing-card__pip" aria-hidden="true">♦</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♦</div>
+                      <p class="playing-card__label">02 · Angular</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">Angular Development</h3>
+                        <p class="playing-card__desc">
+                          Component-driven Angular apps with TypeScript, RxJS patterns, and scalable modules.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">2</span>
+                        <span class="playing-card__pip" aria-hidden="true">♦</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="club">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">3</span>
+                        <span class="playing-card__pip" aria-hidden="true">♣</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♣</div>
+                      <p class="playing-card__label">03 · Layout</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">Responsive Web Design</h3>
+                        <p class="playing-card__desc">
+                          Layouts that adapt intelligently from mobile to large desktop without losing polish.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">3</span>
+                        <span class="playing-card__pip" aria-hidden="true">♣</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="heart">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">4</span>
+                        <span class="playing-card__pip" aria-hidden="true">♥</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♥</div>
+                      <p class="playing-card__label">04 · Motion</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">Interactive UI Development</h3>
+                        <p class="playing-card__desc">
+                          Motion and micro-interactions that support hierarchy — never distract from content.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">4</span>
+                        <span class="playing-card__pip" aria-hidden="true">♥</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="spade">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">5</span>
+                        <span class="playing-card__pip" aria-hidden="true">♠</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♠</div>
+                      <p class="playing-card__label">05 · APIs</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">API Integration</h3>
+                        <p class="playing-card__desc">
+                          Clean REST integrations with resilient loading, error, and empty states.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">5</span>
+                        <span class="playing-card__pip" aria-hidden="true">♠</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="diamond">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">6</span>
+                        <span class="playing-card__pip" aria-hidden="true">♦</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♦</div>
+                      <p class="playing-card__label">06 · Speed</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">Performance Optimization</h3>
+                        <p class="playing-card__desc">
+                          Lean assets, careful rendering, and interfaces that stay responsive under load.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">6</span>
+                        <span class="playing-card__pip" aria-hidden="true">♦</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="swiper-slide">
+                  <article class="playing-card" data-suit="club">
+                    <div class="playing-card__face">
+                      <span class="playing-card__foil" aria-hidden="true"></span>
+                      <span class="playing-card__splatter" aria-hidden="true"></span>
+                      <span class="playing-card__shine" aria-hidden="true"></span>
+                      <div class="playing-card__corner playing-card__corner--tl">
+                        <span class="playing-card__rank">7</span>
+                        <span class="playing-card__pip" aria-hidden="true">♣</span>
+                      </div>
+                      <div class="playing-card__suit" aria-hidden="true">♣</div>
+                      <p class="playing-card__label">07 · Mobile</p>
+                      <div class="playing-card__content">
+                        <h3 class="playing-card__title">Mobile Application Interfaces</h3>
+                        <p class="playing-card__desc">
+                          Ionic and mobile-web interfaces with touch-friendly patterns and consistent design systems.
+                        </p>
+                      </div>
+                      <div class="playing-card__corner playing-card__corner--br">
+                        <span class="playing-card__rank">7</span>
+                        <span class="playing-card__pip" aria-hidden="true">♣</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
               </div>
-              <h3 class="services__title">Frontend Application Development</h3>
-              <p class="services__desc">
-                End-to-end interface builds with maintainable structure and thoughtful UX.
-              </p>
-            </article>
-            <article class="services__card reveal reveal-delay-1" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">02</span>
-              <div class="services__visual" aria-hidden="true">
-                <code class="services__code">&lt;ng-app /&gt;</code>
-              </div>
-              <h3 class="services__title">Angular Development</h3>
-              <p class="services__desc">
-                Component-driven Angular apps with TypeScript, RxJS patterns, and scalable modules.
-              </p>
-            </article>
-            <article class="services__card reveal reveal-delay-2" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">03</span>
-              <div class="services__visual" aria-hidden="true">
-                <span class="services__chip">Mobile</span>
-                <span class="services__chip services__chip--muted">Desktop</span>
-              </div>
-              <h3 class="services__title">Responsive Web Design</h3>
-              <p class="services__desc">
-                Layouts that adapt intelligently from mobile to large desktop without losing polish.
-              </p>
-            </article>
-            <article class="services__card reveal" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">04</span>
-              <div class="services__visual" aria-hidden="true">
-                <span class="services__pulse"></span>
-                <span class="services__pulse services__pulse--soft"></span>
-                <span class="services__pulse services__pulse--soft"></span>
-              </div>
-              <h3 class="services__title">Interactive UI Development</h3>
-              <p class="services__desc">
-                Motion and micro-interactions that support hierarchy — never distract from content.
-              </p>
-            </article>
-            <article class="services__card reveal reveal-delay-1" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">05</span>
-              <div class="services__visual" aria-hidden="true">
-                <span class="services__wave"></span>
-              </div>
-              <h3 class="services__title">API Integration</h3>
-              <p class="services__desc">
-                Clean REST integrations with resilient loading, error, and empty states.
-              </p>
-            </article>
-            <article class="services__card reveal reveal-delay-2" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">06</span>
-              <div class="services__visual" aria-hidden="true">
-                <span class="services__bar"><i></i></span>
-                <span class="services__meta">Fast</span>
-              </div>
-              <h3 class="services__title">Performance Optimization</h3>
-              <p class="services__desc">
-                Lean assets, careful rendering, and interfaces that stay responsive under load.
-              </p>
-            </article>
-            <article class="services__card services__card--featured reveal" data-service-card>
-              <div class="services__card-glow" data-service-glow aria-hidden="true"></div>
-              <span class="services__index">07</span>
-              <div class="services__visual" aria-hidden="true">
-                <span class="services__device"></span>
-                <span class="services__chip services__chip--muted">Touch</span>
-              </div>
-              <h3 class="services__title">Mobile Application Interfaces</h3>
-              <p class="services__desc">
-                Ionic and mobile-web interfaces with touch-friendly patterns and consistent design systems.
-              </p>
-            </article>
+            </div>
+
+            <div class="services__controls">
+              <button
+                type="button"
+                class="services__nav services__nav--prev"
+                data-services-prev
+                aria-label="Previous capability"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div class="services__pagination" data-services-pagination></div>
+              <button
+                type="button"
+                class="services__nav services__nav--next"
+                data-services-next
+                aria-label="Next capability"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M9 18l6-6-6-6"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -1148,6 +1284,7 @@
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
     <script src="js/preloader.js" defer></script>
     <script src="js/config.js" defer></script>
     <script src="js/data/projects.js" defer></script>
@@ -1160,6 +1297,7 @@
     <script src="js/main.js" defer></script>
     <script src="js/navigation.js" defer></script>
     <script src="js/animations.js" defer></script>
+    <script src="js/services-carousel.js" defer></script>
     <script src="js/cursor-glow.js" defer></script>
   </body>
 </html>

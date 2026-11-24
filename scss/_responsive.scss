@@ -237,16 +237,40 @@
 
   .services {
     padding-top: 1.65rem;
-    padding-bottom: 1.65rem;
+    padding-bottom: 2rem;
   }
 
   .services__header {
     margin-bottom: 0.85rem;
   }
 
-  .services__grid {
-    grid-template-columns: 1fr;
-    gap: 0.65rem;
+  .services__carousel {
+    max-width: 100%;
+  }
+
+  .services .swiper {
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .services .swiper-slide {
+    width: min(68vw, 240px);
+  }
+
+  .playing-card__content {
+    bottom: 2.75rem;
+    left: 0.9rem;
+    right: 0.9rem;
+  }
+
+  .playing-card__label {
+    top: 0.9rem;
+    font-size: 0.58rem;
+    padding: 0.24rem 0.55rem;
+  }
+
+  .playing-card__desc {
+    font-size: 0.7rem;
   }
 
   .contact__panel {
