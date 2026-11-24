@@ -3,8 +3,6 @@
 $foil: #7aa2ff;
 $foil-bright: #d4e2ff;
 $foil-deep: #3a5f9a;
-$card-navy: #07090f;
-$card-navy-soft: #0c101a;
 $font-card: $font-display;
 
 .services {
@@ -18,182 +16,14 @@ $font-card: $font-display;
     max-width: 40rem;
   }
 
-  &__carousel {
-    position: relative;
-    width: 100%;
-    max-width: min(100%, 72rem);
-    margin-inline: auto;
-    overflow: hidden;
-    // Reserve height so late Swiper boot doesn't shift the page
-    min-height: clamp(22rem, 64vw, 32rem);
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity 0.45s $ease,
-      transform 0.45s $ease;
-
-    &.is-ready,
-    &.reveal.is-visible {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .swiper {
-    overflow: hidden;
-    padding: 1.85rem 0 2.4rem;
-    perspective: 1400px;
-    // Vertical page scroll stays native; horizontal is owned by Swiper
-    touch-action: pan-y;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      #000 6%,
-      #000 94%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      #000 6%,
-      #000 94%,
-      transparent 100%
-    );
-  }
-
-  &__carousel.is-touch .swiper {
-    // Stronger claim on phones so Coverflow doesn't lose the gesture to document scroll
-    touch-action: pan-y pinch-zoom;
-    cursor: grab;
-  }
-
-  .swiper-wrapper {
-    align-items: center;
-    transform-style: preserve-3d;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
-  }
-
-  .swiper-slide {
-    width: min(70vw, 280px);
-    height: auto;
-    display: flex;
-    justify-content: center;
-    opacity: 0.38;
-    outline: none;
-    scroll-margin: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transform-style: preserve-3d;
-    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-
-    &:focus,
-    &:focus-visible {
-      outline: none;
-    }
-
-    &.swiper-slide-prev,
-    &.swiper-slide-next {
-      opacity: 0.88;
-      z-index: 2;
-    }
-
-    &.swiper-slide-active {
-      opacity: 1;
-      z-index: 4;
-    }
-
-    &[data-depth="2"] {
-      opacity: 0.68;
-      z-index: 1;
-    }
-
-    &[data-depth="3"] {
-      opacity: 0.5;
-      z-index: 0;
-    }
-
-    &[data-depth="far"] {
-      opacity: 0.28;
-      pointer-events: none;
-    }
-  }
-
-  &__controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  // Static 7-card grid — no Swiper / no horizontal gesture conflict
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
-    margin-top: 0.35rem;
-  }
-
-  &__nav {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.65rem;
-    height: 2.65rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: #000000;
-    color: rgba(245, 240, 230, 0.88);
-    cursor: pointer;
-    transition:
-      border-color 0.25s $ease,
-      background 0.25s $ease,
-      color 0.25s $ease,
-      transform 0.25s $ease,
-      box-shadow 0.25s $ease;
-
-    &:hover,
-    &:focus-visible {
-      border-color: rgba($foil, 0.55);
-      color: $foil-bright;
-      background: #050505;
-      box-shadow: 0 0 16px rgba($foil, 0.16);
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    &:active {
-      transform: translateY(0) scale(0.96);
-    }
-
-    &--next {
-      background: #000000;
-      color: #e8eef8;
-      border-color: rgba($foil, 0.35);
-    }
-  }
-
-  &__pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    min-width: 7rem;
-  }
-
-  &__bullet {
-    display: block;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 999px;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    background: rgba($foil, 0.28);
-    transition:
-      width 0.35s $ease,
-      background 0.35s $ease,
-      box-shadow 0.35s $ease;
-
-    &.is-active {
-      width: 1.35rem;
-      background: linear-gradient(90deg, $foil-deep, $foil-bright);
-      box-shadow: 0 0 10px rgba($foil, 0.45);
-    }
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
   }
 }
 
@@ -209,8 +39,9 @@ $font-card: $font-display;
     #7aa2ff 100%
   );
   width: 100%;
-  aspect-ratio: 2.5 / 3.55;
-  transform-style: preserve-3d;
+  max-width: 22rem;
+  margin-inline: auto;
+  aspect-ratio: 2.5 / 3.4;
 
   &__face {
     position: relative;
@@ -228,12 +59,12 @@ $font-card: $font-display;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
       inset 0 0 0 1px rgba($foil, 0.1),
-      0 18px 40px rgba(0, 0, 0, 0.55),
-      0 0 28px rgba($accent, 0.08),
-      0 4px 12px rgba(0, 0, 0, 0.35);
+      0 14px 32px rgba(0, 0, 0, 0.5),
+      0 0 22px rgba($accent, 0.08);
     transition:
-      box-shadow 0.45s $ease,
-      border-color 0.45s $ease;
+      box-shadow 0.35s $ease,
+      border-color 0.35s $ease,
+      transform 0.35s $ease;
 
     &::before {
       content: "";
@@ -244,16 +75,6 @@ $font-card: $font-display;
       pointer-events: none;
       z-index: 2;
     }
-  }
-
-  &.is-active &__face {
-    border-color: rgba($foil-bright, 0.72);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      inset 0 0 0 1px rgba($foil, 0.16),
-      0 24px 50px rgba(0, 0, 0, 0.58),
-      0 0 30px rgba($accent, 0.22),
-      0 0 48px rgba($foil, 0.14);
   }
 
   &__foil {
@@ -278,39 +99,12 @@ $font-card: $font-display;
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.55;
+    opacity: 0.5;
     background-image:
       radial-gradient(circle at 82% 14%, rgba($foil-bright, 0.55) 0 1.5px, transparent 2.2px),
       radial-gradient(circle at 88% 22%, rgba($foil, 0.4) 0 1px, transparent 1.8px),
-      radial-gradient(circle at 76% 28%, rgba($foil-bright, 0.35) 0 0.8px, transparent 1.4px),
       radial-gradient(circle at 14% 78%, rgba($foil, 0.45) 0 1.4px, transparent 2.1px),
-      radial-gradient(circle at 20% 86%, rgba($foil-bright, 0.3) 0 1px, transparent 1.7px),
-      radial-gradient(circle at 9% 70%, rgba($foil, 0.25) 0 0.7px, transparent 1.3px),
-      radial-gradient(ellipse 40% 28% at 90% 8%, rgba($foil, 0.18), transparent 70%),
-      radial-gradient(ellipse 36% 26% at 8% 92%, rgba($foil, 0.14), transparent 70%);
-  }
-
-  &__shine {
-    position: absolute;
-    inset: -20%;
-    pointer-events: none;
-    z-index: 4;
-    background: linear-gradient(
-      115deg,
-      transparent 35%,
-      rgba(180, 210, 255, 0.1) 45%,
-      rgba(255, 255, 255, 0.28) 50%,
-      rgba(180, 210, 255, 0.1) 55%,
-      transparent 65%
-    );
-    transform: translateX(-60%) rotate(8deg);
-    opacity: 0;
-    transition: opacity 0.4s $ease;
-  }
-
-  &.is-active &__shine {
-    opacity: 0.65;
-    animation: playing-card-shine 6s $ease infinite;
+      radial-gradient(circle at 20% 86%, rgba($foil-bright, 0.3) 0 1px, transparent 1.7px);
   }
 
   &__corner {
@@ -335,7 +129,7 @@ $font-card: $font-display;
 
   &__rank {
     font-family: $font-card;
-    font-size: clamp(1.45rem, 3.4vw, 1.85rem);
+    font-size: clamp(1.35rem, 3.2vw, 1.75rem);
     font-weight: 700;
     letter-spacing: 0.02em;
     line-height: 1;
@@ -344,7 +138,6 @@ $font-card: $font-display;
     background-size: 180% 180%;
     -webkit-background-clip: text;
     background-clip: text;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
   }
 
   &__pip {
@@ -360,8 +153,8 @@ $font-card: $font-display;
 
   &__pip-svg {
     display: block;
-    width: 0.95rem;
-    height: 0.95rem;
+    width: 0.9rem;
+    height: 0.9rem;
     overflow: visible;
   }
 
@@ -381,8 +174,8 @@ $font-card: $font-display;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: clamp(4.25rem, 15vw, 5.5rem);
-      height: clamp(4.25rem, 15vw, 5.5rem);
+      width: clamp(3.75rem, 14vw, 5rem);
+      height: clamp(3.75rem, 14vw, 5rem);
     }
   }
 
@@ -391,31 +184,28 @@ $font-card: $font-display;
     width: 100%;
     height: 100%;
     overflow: visible;
-    // Soft shadow without SVG filters (keeps title/desc sharp in 3D)
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
   }
 
   &__content {
     position: absolute;
-    left: 1rem;
-    right: 1rem;
-    bottom: 3.1rem;
+    left: 0.95rem;
+    right: 0.95rem;
+    bottom: 2.85rem;
     z-index: 3;
     text-align: center;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: geometricPrecision;
   }
 
   &__label {
     position: absolute;
-    top: 1.05rem;
+    top: 1rem;
     left: 50%;
     z-index: 4;
     margin: 0;
-    padding: 0.3rem 0.75rem;
+    padding: 0.28rem 0.7rem;
     transform: translateX(-50%);
     font-family: $font-body;
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -424,94 +214,79 @@ $font-card: $font-display;
     border: 1px solid rgba($foil-bright, 0.4);
     border-radius: 999px;
     background: rgba(8, 10, 16, 0.88);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    -webkit-font-smoothing: antialiased;
   }
 
   &__title {
-    margin: 0 0 0.4rem;
+    margin: 0 0 0.35rem;
     font-family: $font-display;
-    font-size: clamp(1rem, 2.5vw, 1.18rem);
+    font-size: clamp(0.95rem, 2.4vw, 1.12rem);
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.25;
     color: #f2f6fc;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   }
 
   &__desc {
     margin: 0;
     font-family: $font-body;
-    font-size: clamp(0.76rem, 1.9vw, 0.88rem);
+    font-size: clamp(0.72rem, 1.8vw, 0.84rem);
     font-weight: 500;
-    line-height: 1.5;
-    color: rgba(200, 214, 240, 0.92);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
-  }
-
-  &.is-active &__title {
-    color: #ffffff;
-  }
-
-  &.is-active &__desc {
-    color: rgba(220, 230, 248, 0.95);
-  }
-
-}
-
-@keyframes playing-card-shine {
-  0%,
-  55% {
-    transform: translateX(-70%) rotate(8deg);
-  }
-  100% {
-    transform: translateX(70%) rotate(8deg);
+    line-height: 1.45;
+    color: rgba(200, 214, 240, 0.9);
   }
 }
 
 @media (min-width: $bp-sm) {
-  .services .swiper-slide {
-    width: min(52vw, 250px);
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.15rem;
+  }
+
+  .playing-card {
+    max-width: none;
   }
 }
 
 @media (min-width: $bp-md) {
-  .services .swiper-slide {
-    width: 260px;
+  .services__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
   }
 
   .playing-card__content {
-    bottom: 3.35rem;
+    bottom: 3.1rem;
   }
 }
 
 @media (min-width: $bp-lg) {
-  .services .swiper-slide {
-    width: 270px;
+  .services__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.35rem;
+  }
+
+  // 7 cards: 4 on first row, 3 centered on second
+  .services__grid .playing-card:nth-child(5) {
+    grid-column: 2;
   }
 
   .playing-card__suit--svg {
-    width: 5.35rem;
-    height: 5.35rem;
+    width: 4.75rem;
+    height: 4.75rem;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .services .swiper-slide-active .playing-card__face:hover {
-    border-color: rgba($foil-bright, 0.78);
+  .playing-card:hover .playing-card__face {
+    border-color: rgba($foil-bright, 0.72);
+    transform: translateY(-4px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 20px 40px rgba(0, 0, 0, 0.55),
+      0 0 28px rgba($accent, 0.16);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .playing-card.is-active .playing-card__shine {
-    animation: none;
-    opacity: 0.3;
-    transform: none;
-  }
-
-  .services__carousel,
-  .services__nav,
-  .services__bullet,
   .playing-card__face {
     transition: none;
   }
