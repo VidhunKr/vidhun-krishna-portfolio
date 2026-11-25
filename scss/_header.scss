@@ -547,10 +547,10 @@
   &-inner {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 100%;
-    padding: 5.75rem clamp(1.35rem, 5vw, 2.5rem) 2rem;
-    gap: 1.35rem;
+    padding: 5.25rem clamp(1.35rem, 5vw, 2.5rem) 2rem;
+    gap: 1rem;
     transform: translateY(18px);
     opacity: 0;
     transition: transform 0.45s $ease, opacity 0.4s $ease;
@@ -610,6 +610,21 @@
 
 body.nav-open {
   overflow: hidden;
+
+  /* Keep logo + close (X) toggle above the full-screen menu */
+  .site-header {
+    z-index: 120;
+  }
+
+  .nav-shell {
+    background: rgba(0, 0, 0, 0.92);
+    border-color: rgba(170, 190, 255, 0.22);
+  }
+
+  .nav__toggle {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
 }
 
 @media (min-width: $bp-lg) {

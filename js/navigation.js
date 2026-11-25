@@ -97,7 +97,8 @@
     mobile.classList.add("is-closing");
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Open menu");
-    document.body.classList.remove("nav-open");
+    // Keep body.nav-open until fade finishes so the header doesn’t drop
+    // under the overlay and blink while the menu closes.
 
     // Skip focus restore on in-page nav — it fights Lenis scrollTo on mobile
     if (opts.restoreFocus !== false && lastFocused && typeof lastFocused.focus === "function") {
@@ -108,6 +109,7 @@
     closeTimer = window.setTimeout(() => {
       mobile.classList.remove("is-closing");
       mobile.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("nav-open");
       menuClosing = false;
       closeTimer = 0;
     }, MENU_CLOSE_MS);
