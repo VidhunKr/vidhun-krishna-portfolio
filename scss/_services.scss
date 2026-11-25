@@ -407,6 +407,9 @@ $font-card: "Instrument Serif", "Times New Roman", serif;
 @media (max-width: ($bp-sm - 1)) {
   .services__chrome {
     flex-wrap: wrap;
+    // Clear space under the fan so controls don't kiss the card
+    margin-top: 1.75rem;
+    padding-top: 0.35rem;
   }
 
   .services__controls {
@@ -419,7 +422,9 @@ $font-card: "Instrument Serif", "Times New Roman", serif;
   }
 
   .services__stage {
-    height: 21.5rem;
+    // Tall enough for scaled card + side drop without overlapping chrome
+    height: 23.5rem;
+    margin-bottom: 0.35rem;
   }
 
   .playing-card {
